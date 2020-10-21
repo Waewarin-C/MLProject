@@ -28,12 +28,13 @@ class GameWindow:
             pygame.display.flip()
 
     def start_game(self):
+
         # This is the main loop for the entire game.
         # We can setup scenes from here potentially.
         while True:
             self.screen.blit(self.background, (0, 0))
             pygame.display.flip()
-            self.render_mac_mouse()
+            #self.render_mac_mouse()
 
             for event in pygame.event.get():
                 if event.type == QUIT:
