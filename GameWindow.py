@@ -28,6 +28,8 @@ class GameWindow:
             pygame.display.flip()
 
     def start_game(self):
+        # This is the main loop for the entire game.
+        # We can setup scenes from here potentially.
         while True:
             self.screen.blit(self.background, (0, 0))
             pygame.display.flip()
@@ -35,5 +37,5 @@ class GameWindow:
 
             for event in pygame.event.get():
                 if event.type == QUIT:
-                    return
-
+                    pygame.quit()
+                    quit()
