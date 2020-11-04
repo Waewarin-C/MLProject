@@ -19,28 +19,19 @@ class GameWindow:
 
         pygame.display.set_caption("ML Tic Tac Toe")
 
-    def render_mac_mouse(self):
-        if sys.platform == "darwin":
-            self.custom_cursor = pygame.image.load(os.path.join('./', 'macmouse.png')).convert_alpha()
-            self.custom_cursor = pygame.transform.scale(self.custom_cursor, (18, 27))
-            pygame.mouse.set_visible(False)
-            self.screen.blit(self.custom_cursor, (pygame.mouse.get_pos()))
-
     def render_parallax_background_graphic(self):
         x, y = pygame.mouse.get_pos()
-        self.screen.blit(self.parallax_graphic, (x*-.2, y*-.2))
+        self.screen.blit(self.parallax_graphic, (x * -.2, y * -.2))
 
     def render_game_title(self):
         font_size = 32
         font = pygame.font.Font('freesansbold.tiff', font_size)
-
 
     def start_game(self):
 
         # This is the main loop for the entire game application.
         while True:
 
-            self.render_mac_mouse()
             self.render_parallax_background_graphic()
             pygame.display.flip()
 
