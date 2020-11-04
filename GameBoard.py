@@ -1,6 +1,11 @@
 import numpy as np
 
 
+def outOfBounds(coord):
+    row, col = coord
+    return row < 0 or row >= 3 or col < 0 or col >= 3
+
+
 class GameBoard:
 
     def __init__(self):
@@ -40,7 +45,3 @@ class GameBoard:
         row, col = coord
         self.board[row, col] = player_symbol
         self.setSpaceTaken(coord)
-
-    def outOfBounds(self, coord):
-        row, col = coord
-        return row < 0 or row >= 3 or col < 0 or col >= 3

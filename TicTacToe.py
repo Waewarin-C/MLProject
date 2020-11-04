@@ -41,4 +41,4 @@ class TicTacToe:
         return self.get_current_player().player_tag
 
     def isValidMove(self, coord):
-        return not self.game_board.isSpaceTaken(coord) and not self.game_board.outOfBounds(coord)
+        return not self.game_board.isSpaceTaken(coord) and not outOfBounds(coord)
