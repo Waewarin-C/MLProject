@@ -23,11 +23,9 @@ class GameWindowFoundation:
         while True:
 
             scene.render()
-
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-
-            scene.handle_events(pygame.event.get())
+                scene.handle_events(event)
 

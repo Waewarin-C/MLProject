@@ -6,6 +6,7 @@ WHITE = (255, 255, 255)
 BUTTON_RADIUS = 4
 FONT_PATH = './Open_Sans/OpenSans-Light.ttf'
 
+button_regions = dict()
 
 class TitleScreenScene:
 
@@ -58,7 +59,7 @@ class TitleScreenScene:
         width = text_surface.get_width()
         height = text_surface.get_height()
         button_center_x, button_center_y, middle_diff = self.calculate_centers(height, width, y_offset)
-        self.draw_rectangle(button_center_x, button_center_y, height, width)
+        self.draw_rectangle(button_center_x, button_center_y, height, width, button_text)
         self.screen.blit(text_surface, (middle_diff, y_offset))
 
     def render_player_vs_player_button(self):
@@ -81,10 +82,22 @@ class TitleScreenScene:
         text_surface = font.render(text_label, True, text_color)
         return font, text_surface
 
-    def draw_rectangle(self, button_center_x, button_center_y, height, width):
+    def draw_rectangle(self, button_center_x, button_center_y, height, width, button_id):
+
+        button_x_coord = button_center_x
+        button_y_coord = button_center_y + 3
+
+        button_width = width + 50
+        button_height = height + (height / 4)
+
+        button_regions[button_id] = dict()
+        button_regions[button_id]['top_left'] = (button_x_coord, button_y_coord)
+        button_regions[button_id]['top_right'] = (button_x_coord + button_width, button_y_coord)
+        button_regions[button_id]['bottom_left'] = (button_x_coord, button_y_coord + button_height)
+        button_regions[button_id]['bottom_right'] = (button_x_coord + button_width, button_y_coord+button_height)
 
         pygame.draw.rect(self.screen, BLACK,
-                         [button_center_x, button_center_y + 3, width + 50, height + (height / 4)],
+                         [button_x_coord, button_y_coord, button_width, button_height],
                          border_radius=BUTTON_RADIUS)
 
     def render(self):
@@ -96,5 +109,15 @@ class TitleScreenScene:
 
         pygame.display.flip()
 
-    def handle_events(self, events):
-        pass
+    def handle_events(self, event):
+        if event.type == pygame.MOUSEBUTTONUP:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            for id in button_regions.keys():
+                x1, y1 = button_regions[id]['top_left']
+                x2, _ = button_regions[id]['top_right']
+                _, y2 = button_regions[id]['bottom_right']
+                _, _ = button_regions[id]['bottom_left']
+
+                if x1 <= mouse_x <= x2 and y1 <= mouse_y <= y2:
+                    print("In button " + id)
+                    break
