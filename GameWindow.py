@@ -8,6 +8,8 @@ window_height = 600
 
 class GameWindowFoundation:
 
+    scene = None
+
     def __init__(self):
         pygame.init()
         self.custom_cursor = None
@@ -17,15 +19,15 @@ class GameWindowFoundation:
 
     def start_game(self):
 
-        scene = TitleScreenScene(self.screen)
+        GameWindowFoundation.scene = TitleScreenScene(self.screen)
 
         # This is the main loop for the entire game application.
         while True:
 
-            scene.render()
+            GameWindowFoundation.scene.render()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
-                scene.handle_events(event)
+                GameWindowFoundation.scene.handle_events(event)
 

@@ -1,5 +1,7 @@
 import pygame
 import GameWindow
+from ChooseSymbolScene import *
+from ParallaxEffect import *
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -8,19 +10,13 @@ FONT_PATH = './Open_Sans/OpenSans-Light.ttf'
 
 button_regions = dict()
 
+
 class TitleScreenScene:
 
     def __init__(self, screen):
         self.screen = screen
         self.screen.fill(WHITE)
-        self.parallax_graphic = pygame.image.load('geometric_line.png').convert()
-        self.parallax_graphic = pygame.transform.smoothscale(self.parallax_graphic, (800, 750))
-
-    def render_parallax_background_graphic(self):
-        x, y = pygame.mouse.get_pos()
-        self.screen.fill(WHITE)
-        self.parallax_graphic.set_alpha(50)
-        self.screen.blit(self.parallax_graphic, (x * -.2, y * -.2))
+        self.parallax = ParallaxEffect(self.screen)
 
     def render_game_title(self):
         font_size = 64
@@ -94,20 +90,23 @@ class TitleScreenScene:
         button_regions[button_id]['top_left'] = (button_x_coord, button_y_coord)
         button_regions[button_id]['top_right'] = (button_x_coord + button_width, button_y_coord)
         button_regions[button_id]['bottom_left'] = (button_x_coord, button_y_coord + button_height)
-        button_regions[button_id]['bottom_right'] = (button_x_coord + button_width, button_y_coord+button_height)
+        button_regions[button_id]['bottom_right'] = (button_x_coord + button_width, button_y_coord + button_height)
 
         pygame.draw.rect(self.screen, BLACK,
                          [button_x_coord, button_y_coord, button_width, button_height],
                          border_radius=BUTTON_RADIUS)
 
     def render(self):
-        self.render_parallax_background_graphic()
+        self.parallax.render_parallax_background_graphic()
         self.render_game_title()
         self.render_player_vs_agent_button()
         self.render_train_agent_button()
         self.render_player_vs_player_button()
 
         pygame.display.flip()
+
+    def goto_scene(self, new_scene):
+        pass
 
     def handle_events(self, event):
         if event.type == pygame.MOUSEBUTTONUP:
@@ -119,5 +118,10 @@ class TitleScreenScene:
                 _, _ = button_regions[id]['bottom_left']
 
                 if x1 <= mouse_x <= x2 and y1 <= mouse_y <= y2:
-                    print("In button " + id)
+
+                    if id == 'Player vs. Agent' or id == 'Player vs. Player':
+                        GameWindow.GameWindowFoundation.scene = ChooseSymbolScene(self.screen)
+                    else:
+                        # TODO: Push to Player vs Agent
+                        pass
                     break
