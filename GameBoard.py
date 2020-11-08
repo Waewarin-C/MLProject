@@ -8,9 +8,10 @@ def outOfBounds(coord):
 # This class is the data structure representing the game board only.
 class GameBoard:
 
-    def __init__(self):
+    def __init__(self, default_spaces='.'):
         self.used_spaces = dict()
-        self.board = np.full((3, 3), '.', dtype=str)
+        self.default_spaces = default_spaces
+        self.board = np.full((3, 3), default_spaces, dtype=type(default_spaces))
         self.size_range = range(0, 3)
 
     def isSpaceTaken(self, coord):

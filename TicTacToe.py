@@ -18,12 +18,14 @@ class TicTacToe:
         self.player_one = player_one
         self.player_two = player_two
 
+        self.symbol_numbers = {player_one.get_player_symbol() : 1, player_two.get_player_symbol() : 2}
+
         self.player_queue = list()
         self.player_queue.append(player_one)
         self.player_queue.append(player_two)
         self.num_players = len(self.player_queue)
 
-        self.game_board = GameBoard()
+        self.game_board = GameBoard(default_spaces=0)
 
         self.winning_player = None
         self.game_won = False
@@ -33,7 +35,10 @@ class TicTacToe:
 
     def play_round(self, coord):
         current_player = self.get_current_player()
-        self.game_board.placeSymbol(coord, current_player.get_player_symbol())
+
+        symbol = self.symbol_numbers[current_player.get_player_symbol()]
+
+        self.game_board.placeSymbol(coord, symbol)
         self.current_player_index = (self.current_player_index + 1) % self.num_players
 
     def get_current_player(self):
@@ -75,6 +80,7 @@ class TicTacToe:
         board_bands.append(right_vertical_band)
 
         for band in board_bands:
+            print(band)
             self.check_band_for_consecutive_elements(band)
             if self.game_won:
                 return
@@ -84,8 +90,10 @@ class TicTacToe:
 
     def check_band_for_consecutive_elements(self, band):
 
+        symbol = self.symbol_numbers[self.player_one.get_player_symbol()]
+
         if self.band_has_consecutive_elements(band):
-            if band[0] == self.player_one.get_player_symbol():
+            if band[0] == symbol:
                 self.winning_player = self.player_one
             else:
                 self.winning_player = self.player_two
@@ -96,7 +104,7 @@ class TicTacToe:
 
         for band in bands:
             for element in band:
-                if element == '.':
+                if element == self.game_board.default_spaces:
                     self.tie_game = False
                     return
 
@@ -107,13 +115,13 @@ class TicTacToe:
         element_index = 0
         previous = band[element_index]
 
-        if previous == '.':
+        if previous == self.game_board.default_spaces:
             return False
 
         element_index += 1
         while element_index < 3:
 
-            if band[element_index] == '.':
+            if band[element_index] == self.game_board.default_spaces:
                 return False
 
             if band[element_index] != previous:
