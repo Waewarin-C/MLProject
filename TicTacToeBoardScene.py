@@ -97,7 +97,7 @@ class TicTacToeBoardScene:
             coords = (2, 2)
             hit_box = hit_box_9
 
-        if not self.game_model.isValidMove(coords):
+        if coords is None or not self.game_model.isValidMove(coords):
             return None
 
         self.render_symbol_sprite_from_hitbox_with_symbol(hit_box, current_player_symbol)
