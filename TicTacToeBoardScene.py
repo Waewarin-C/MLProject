@@ -46,13 +46,23 @@ class TicTacToeBoardScene:
 
     # This function will deal with interacting with the game based on screen UI interactions.
     def handle_events(self, event):
+
+        if self.game_model.game_won:
+            self.render_player_winner_with_text(self.game_model.get_winning_player().player_tag)
+            return
+
         if event.type == pygame.MOUSEBUTTONUP:
             mouse_x, mouse_y = pygame.mouse.get_pos()
             player_symbol = self.game_model.get_current_player().get_player_symbol()
             board_coords = self.get_board_coordinates_from_click_and_render(mouse_x, mouse_y, player_symbol)
             if board_coords is None:
                 return
+
             self.game_model.play_round(board_coords)
+            self.game_model.determine_winner()
+            if self.game_model.game_won:
+                return
+
             self.render_player_prompt_with_text(self.game_model.get_current_player_tag())
 
 
@@ -142,6 +152,20 @@ class TicTacToeBoardScene:
 
         font = pygame.font.Font(FONT_PATH, 36)
         prompt_text_surface = font.render(text + '\'s Turn', True, BLACK)
+        width = prompt_text_surface.get_width()
+        middle_diff = abs((GameWindow.window_width / 2) - (width / 2))
+
+        pygame.draw.rect(self.screen, WHITE,
+                         [middle_diff, 26, width, prompt_text_surface.get_height()])
+
+        self.screen.blit(prompt_text_surface, (middle_diff, 26))
+        pygame.display.update()
+
+
+    def render_player_winner_with_text(self, text):
+
+        font = pygame.font.Font(FONT_PATH, 36)
+        prompt_text_surface = font.render(text + ' Wins The Game!', True, BLACK)
         width = prompt_text_surface.get_width()
         middle_diff = abs((GameWindow.window_width / 2) - (width / 2))
 

@@ -55,6 +55,11 @@ class TicTacToe:
         top_horizontal_band = self.game_board.get_horizontal_band_top()
         middle_horizontal_band = self.game_board.get_horizontal_band_middle()
         bottom_horizontal_band = self.game_board.get_horizontal_band_bottom()
+
+        left_vertical_band = self.game_board.get_vertical_band_left()
+        middle_vertical_band = self.game_board.get_vertical_band_middle()
+        right_vertical_band = self.game_board.get_vertical_band_right()
+
         top_left_diagonal = self.game_board.get_diagonal_band_from_top_left()
         top_right_diagonal = self.game_board.get_diagonal_band_from_top_right()
 
@@ -64,6 +69,9 @@ class TicTacToe:
         board_bands.append(bottom_horizontal_band)
         board_bands.append(top_left_diagonal)
         board_bands.append(top_right_diagonal)
+        board_bands.append(left_vertical_band)
+        board_bands.append(middle_vertical_band)
+        board_bands.append(right_vertical_band)
 
         for band in board_bands:
             self.check_band_for_consecutive_elements(band)
@@ -71,22 +79,31 @@ class TicTacToe:
                 return
 
     def check_band_for_consecutive_elements(self, band):
+
         if self.band_has_consecutive_elements(band):
-            if band[0][0] == self.player_one.get_player_symbol():
+            if band[0] == self.player_one.get_player_symbol():
                 self.winning_player = self.player_one
             else:
-                self.player_two
+                self.winning_player = self.player_two
             self.game_won = True
 
     def band_has_consecutive_elements(self, band):
+
         element_index = 0
         previous = band[element_index]
+
+        if previous == '.':
+            return False
 
         element_index += 1
         while element_index < 3:
 
+            if band[element_index] == '.':
+                return False
+
             if band[element_index] != previous:
                 return False
+
             previous = band[element_index]
 
             element_index += 1

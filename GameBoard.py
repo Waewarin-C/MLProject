@@ -47,22 +47,25 @@ class GameBoard:
         self.setSpaceTaken(coord)
 
     def get_horizontal_band_top(self):
-        return self.board[0:1, 0:]
+        return self.board[0:1, 0:][0]
 
     def get_horizontal_band_middle(self):
-        return self.board[1:2, 0:]
+        return self.board[1:2, 0:][0]
 
     def get_horizontal_band_bottom(self):
-        return self.board[2:3, 0:]
+        return self.board[2:3, 0:][0]
 
     def get_vertical_band_left(self):
-        return self.board[0:, 0:1]
+        strip = self.board[0:, 0:1]
+        return strip.reshape(1,3)[0]
 
     def get_vertical_band_middle(self):
-        return self.board[0:, 1:2]
+        strip = self.board[0:, 1:2]
+        return strip.reshape(1,3)[0]
 
     def get_vertical_band_right(self):
-        return self.board[0:, 2:3]
+        strip = self.board[0:, 2:3]
+        return strip.reshape(1,3)[0]
 
     def get_diagonal_band_from_top_left(self):
         return np.diag(self.board)
