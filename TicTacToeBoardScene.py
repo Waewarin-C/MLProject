@@ -47,6 +47,10 @@ class TicTacToeBoardScene:
     # This function will deal with interacting with the game based on screen UI interactions.
     def handle_events(self, event):
 
+        if self.game_model.tie_game:
+            self.render_tie_label()
+            return
+
         if self.game_model.game_won:
             self.render_player_winner_with_text(self.game_model.get_winning_player().player_tag)
             return
@@ -157,6 +161,20 @@ class TicTacToeBoardScene:
 
         pygame.draw.rect(self.screen, WHITE,
                          [middle_diff, 26, width, prompt_text_surface.get_height()])
+
+        self.screen.blit(prompt_text_surface, (middle_diff, 26))
+        pygame.display.update()
+
+
+    def render_tie_label(self):
+
+        font = pygame.font.Font(FONT_PATH, 36)
+        prompt_text_surface = font.render('TIE GAME', True, BLACK)
+        width = prompt_text_surface.get_width()
+        middle_diff = abs((GameWindow.window_width / 2) - (width / 2))
+
+        pygame.draw.rect(self.screen, WHITE,
+                         [0, 26, GameWindow.window_width, prompt_text_surface.get_height()])
 
         self.screen.blit(prompt_text_surface, (middle_diff, 26))
         pygame.display.update()

@@ -27,6 +27,7 @@ class TicTacToe:
 
         self.winning_player = None
         self.game_won = False
+        self.tie_game = False
 
         Player.used_symbols.clear()
 
@@ -78,6 +79,9 @@ class TicTacToe:
             if self.game_won:
                 return
 
+        self.check_bands_for_tie(board_bands)
+
+
     def check_band_for_consecutive_elements(self, band):
 
         if self.band_has_consecutive_elements(band):
@@ -86,6 +90,17 @@ class TicTacToe:
             else:
                 self.winning_player = self.player_two
             self.game_won = True
+
+
+    def check_bands_for_tie(self, bands):
+
+        for band in bands:
+            for element in band:
+                if element == '.':
+                    self.tie_game = False
+                    return
+
+        self.tie_game = True
 
     def band_has_consecutive_elements(self, band):
 
