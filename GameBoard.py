@@ -5,7 +5,7 @@ def outOfBounds(coord):
     row, col = coord
     return row < 0 or row >= 3 or col < 0 or col >= 3
 
-
+# This class is the data structure representing the game board only.
 class GameBoard:
 
     def __init__(self):
@@ -45,3 +45,27 @@ class GameBoard:
         row, col = coord
         self.board[row, col] = player_symbol
         self.setSpaceTaken(coord)
+
+    def get_horizontal_band_top(self):
+        return self.board[0:1, 0:]
+
+    def get_horizontal_band_middle(self):
+        return self.board[1:2, 0:]
+
+    def get_horizontal_band_bottom(self):
+        return self.board[2:3, 0:]
+
+    def get_vertical_band_left(self):
+        return self.board[0:, 0:1]
+
+    def get_vertical_band_middle(self):
+        return self.board[0:, 1:2]
+
+    def get_vertical_band_right(self):
+        return self.board[0:, 2:3]
+
+    def get_diagonal_band_from_top_left(self):
+        return np.diag(self.board)
+
+    def get_diagonal_band_from_top_right(self):
+        return np.diag(np.fliplr(self.board))

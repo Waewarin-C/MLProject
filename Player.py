@@ -21,5 +21,5 @@ class Player:
 
         Player.used_symbols.add(player_symbol)
 
-    def getPlayerSymbol(self):
+    def get_player_symbol(self):
         return self.player_symbol

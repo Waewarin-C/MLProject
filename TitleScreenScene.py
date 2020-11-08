@@ -118,10 +118,5 @@ class TitleScreenScene:
                 _, _ = button_regions[id]['bottom_left']
 
                 if x1 <= mouse_x <= x2 and y1 <= mouse_y <= y2:
-
-                    if id == 'Player vs. Agent' or id == 'Player vs. Player':
-                        GameWindow.GameWindowFoundation.scene = ChooseSymbolScene(self.screen)
-                    else:
-                        # TODO: Push to Player vs Agent
-                        pass
-                    break
+                   GameWindow.GameWindowFoundation.scene = ChooseSymbolScene(self.screen, id)
+                   break

@@ -1,7 +1,10 @@
 import pygame
 import GameWindow
 import TitleScreenScene
+import TicTacToeBoardScene
 from ParallaxEffect import *
+from TicTacToe import *
+from Player import *
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -11,9 +14,10 @@ FONT_PATH = './Open_Sans/OpenSans-Regular.ttf'
 
 class ChooseSymbolScene:
 
-    def __init__(self, screen):
+    def __init__(self, screen, game_id):
         self.screen = screen
         self.screen.fill(WHITE)
+        self.game_id = game_id
 
         self.circle_sprite = pygame.image.load('./osprites.png')
         self.circle_sprite = pygame.transform.smoothscale(self.circle_sprite, (200, 200))
@@ -43,14 +47,34 @@ class ChooseSymbolScene:
     def handle_events(self, event):
         if event.type == pygame.MOUSEBUTTONUP:
             mouse_coords = pygame.mouse.get_pos()
+
+
             # Back button region
             if 10 <= mouse_coords[0] <= 10 + 36 and 10 <= mouse_coords[1] <= 10 + 36:
                 GameWindow.GameWindowFoundation.scene = TitleScreenScene.TitleScreenScene(self.screen)
 
             # Circle symbol
             if 50 <= mouse_coords[0] <= 50 + 200 and 175 <= mouse_coords[1] <= 175 + 200:
-                print('circle pressed')
+
+                game_model = None
+                if self.game_id == 'Train Agent':
+                    pass
+                elif self.game_id == 'Player vs. Player':
+                    game_model = TicTacToe(Player('O', 'Player 1'), Player('X', 'Player 2'))
+                else:
+                    pass
+
+                GameWindow.GameWindowFoundation.scene = TicTacToeBoardScene.TicTacToeBoardScene(self.screen, game_model)
 
             # X symbol
             if 310 <= mouse_coords[0] <= 310 + 200 and 175 <= mouse_coords[1] <= 175 + 200:
-                print('X pressed')
+
+                game_model = None
+                if self.game_id == 'Train Agent':
+                    pass
+                elif self.game_id == 'Player vs. Player':
+                    game_model = TicTacToe(Player('X', 'Player 1'), Player('O', 'Player 2'))
+                else:
+                    pass
+
+                GameWindow.GameWindowFoundation.scene = TicTacToeBoardScene.TicTacToeBoardScene(self.screen, game_model)
