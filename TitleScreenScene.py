@@ -2,6 +2,7 @@ import pygame
 import GameWindow
 from ChooseSymbolScene import *
 from ParallaxEffect import *
+from TrainingEnvironment import *
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -118,5 +119,11 @@ class TitleScreenScene:
                 _, _ = button_regions[id]['bottom_left']
 
                 if x1 <= mouse_x <= x2 and y1 <= mouse_y <= y2:
-                   GameWindow.GameWindowFoundation.scene = ChooseSymbolScene(self.screen, id)
-                   break
+
+                    if id == 'Train Agent':
+                        environment = TrainingEnvironment()
+                        utils.validate_py_environment(environment, episodes=5)
+                        break
+
+                    GameWindow.GameWindowFoundation.scene = ChooseSymbolScene(self.screen, id)
+                    break

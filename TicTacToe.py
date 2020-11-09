@@ -47,6 +47,9 @@ class TicTacToe:
     def get_board(self):
         return self.game_board
 
+    def get_board_grid(self):
+        return self.game_board.board
+
     def get_current_player_tag(self):
         return self.get_current_player().player_tag
 

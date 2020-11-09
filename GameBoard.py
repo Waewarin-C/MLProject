@@ -73,3 +73,4 @@ class GameBoard:
 
     def get_diagonal_band_from_top_right(self):
         return np.diag(np.fliplr(self.board))
+

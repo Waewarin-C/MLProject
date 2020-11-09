@@ -5,6 +5,7 @@ import TicTacToeBoardScene
 from ParallaxEffect import *
 from TicTacToe import *
 from Player import *
+from TrainingEnvironment import *
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -57,9 +58,7 @@ class ChooseSymbolScene:
             if 50 <= mouse_coords[0] <= 50 + 200 and 175 <= mouse_coords[1] <= 175 + 200:
 
                 game_model = None
-                if self.game_id == 'Train Agent':
-                    pass
-                elif self.game_id == 'Player vs. Player':
+                if self.game_id == 'Player vs. Player':
                     game_model = TicTacToe(Player('O', 'Player 1'), Player('X', 'Player 2'))
                 else:
                     pass
@@ -70,9 +69,7 @@ class ChooseSymbolScene:
             if 310 <= mouse_coords[0] <= 310 + 200 and 175 <= mouse_coords[1] <= 175 + 200:
 
                 game_model = None
-                if self.game_id == 'Train Agent':
-                    pass
-                elif self.game_id == 'Player vs. Player':
+                if self.game_id == 'Player vs. Player':
                     game_model = TicTacToe(Player('X', 'Player 1'), Player('O', 'Player 2'))
                 else:
                     pass
