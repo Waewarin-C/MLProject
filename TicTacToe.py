@@ -59,6 +59,11 @@ class TicTacToe:
     def get_winning_player(self):
         return self.winning_player
 
+    def get_player_number(self):
+        if self.get_current_player() == self.player_one:
+            return 1
+        return 2
+
     def determine_winner(self):
 
         top_horizontal_band = self.game_board.get_horizontal_band_top()
@@ -83,7 +88,6 @@ class TicTacToe:
         board_bands.append(right_vertical_band)
 
         for band in board_bands:
-            print(band)
             self.check_band_for_consecutive_elements(band)
             if self.game_won:
                 return

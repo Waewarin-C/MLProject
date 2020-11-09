@@ -121,8 +121,7 @@ class TitleScreenScene:
                 if x1 <= mouse_x <= x2 and y1 <= mouse_y <= y2:
 
                     if id == 'Train Agent':
-                        environment = TrainingEnvironment()
-                        utils.validate_py_environment(environment, episodes=5)
+                        # Push to training scene.
                         break
 
                     GameWindow.GameWindowFoundation.scene = ChooseSymbolScene(self.screen, id)
