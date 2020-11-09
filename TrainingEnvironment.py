@@ -36,6 +36,12 @@ tf.compat.v1.enable_v2_behavior()
 
 '''
 
+LOSING_PENALTY = -1
+WINNING_REWARD = 1
+TIE_REWARD = 0
+
+INTERMEDIATE_REWARD = 0.1
+DISCOUNT_FACTOR = 1.0
 
 class TrainingEnvironment(py_environment.PyEnvironment):
     action_to_coordinate = {1: (0, 0), 2: (0, 1), 3: (0, 2),
@@ -75,24 +81,24 @@ class TrainingEnvironment(py_environment.PyEnvironment):
         # Want it to make the right choice instead of choosing taken spot
         if self._is_spot_taken(action_coord):
             self._episode_ended = True
-            return ts.termination(np.array(self._state, dtype=self._state.dtype), -1)
+            return ts.termination(np.array(self._state, dtype=self._state.dtype), LOSING_PENALTY)
 
         self.game.play_round(action_coord)
         self.game.determine_winner()
 
         if self.game.game_won and self.game.get_winning_player().player_tag == 'Agent':
             self._episode_ended = True
-            return ts.termination(np.array(self._state, dtype=self._state.dtype), 1)
+            return ts.termination(np.array(self._state, dtype=self._state.dtype), WINNING_REWARD)
 
         if self.game.game_won and not self.game.get_winning_player().player_tag == 'Agent':
             self._episode_ended = True
-            return ts.termination(np.array(self._state, dtype=self._state.dtype), -1)
+            return ts.termination(np.array(self._state, dtype=self._state.dtype), LOSING_PENALTY)
 
         if self.game.tie_game:
             self._episode_ended = True
-            return ts.termination(np.array(self._state, dtype=self._state.dtype), 0)
+            return ts.termination(np.array(self._state, dtype=self._state.dtype), TIE_REWARD)
 
-        return ts.transition(np.array(self._state, dtype=self._state.dtype), reward=0.1, discount=1.0)
+        return ts.transition(np.array(self._state, dtype=self._state.dtype), reward=INTERMEDIATE_REWARD, discount=DISCOUNT_FACTOR)
 
     def _reset(self):
         self.game = TicTacToe(Player('O', 'Player 1'), Player('X', 'Agent'))

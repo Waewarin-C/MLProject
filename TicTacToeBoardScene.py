@@ -69,45 +69,53 @@ class TicTacToeBoardScene:
 
             self.render_player_prompt_with_text(self.game_model.get_current_player_tag())
 
-
     def get_board_coordinates_from_click_and_render(self, mouse_x, mouse_y, current_player_symbol):
 
         coords = None
         hit_box = None
 
-        if hit_box_1[0] <= mouse_x <= hit_box_1[0] + hit_box_1[2] and hit_box_1[1] <= mouse_y <= hit_box_1[1] + hit_box_1[3]:
+        if hit_box_1[0] <= mouse_x <= hit_box_1[0] + hit_box_1[2] and hit_box_1[1] <= mouse_y <= hit_box_1[1] + \
+                hit_box_1[3]:
             coords = (0, 0)
             hit_box = hit_box_1
 
-        if hit_box_2[0] <= mouse_x <= hit_box_2[0] + hit_box_2[2] and hit_box_2[1] <= mouse_y <= hit_box_2[1] + hit_box_2[3]:
+        if hit_box_2[0] <= mouse_x <= hit_box_2[0] + hit_box_2[2] and hit_box_2[1] <= mouse_y <= hit_box_2[1] + \
+                hit_box_2[3]:
             coords = (0, 1)
             hit_box = hit_box_2
 
-        if hit_box_3[0] <= mouse_x <= hit_box_3[0] + hit_box_3[2] and hit_box_3[1] <= mouse_y <= hit_box_3[1] + hit_box_3[3]:
+        if hit_box_3[0] <= mouse_x <= hit_box_3[0] + hit_box_3[2] and hit_box_3[1] <= mouse_y <= hit_box_3[1] + \
+                hit_box_3[3]:
             coords = (0, 2)
             hit_box = hit_box_3
 
-        if hit_box_4[0] <= mouse_x <= hit_box_4[0] + hit_box_4[2] and hit_box_4[1] <= mouse_y <= hit_box_4[1] + hit_box_4[3]:
+        if hit_box_4[0] <= mouse_x <= hit_box_4[0] + hit_box_4[2] and hit_box_4[1] <= mouse_y <= hit_box_4[1] + \
+                hit_box_4[3]:
             coords = (1, 0)
             hit_box = hit_box_4
 
-        if hit_box_5[0] <= mouse_x <= hit_box_5[0] + hit_box_5[2] and hit_box_5[1] <= mouse_y <= hit_box_5[1] + hit_box_5[3]:
+        if hit_box_5[0] <= mouse_x <= hit_box_5[0] + hit_box_5[2] and hit_box_5[1] <= mouse_y <= hit_box_5[1] + \
+                hit_box_5[3]:
             coords = (1, 1)
             hit_box = hit_box_5
 
-        if hit_box_6[0] <= mouse_x <= hit_box_6[0] + hit_box_6[2] and hit_box_6[1] <= mouse_y <= hit_box_6[1] + hit_box_6[3]:
+        if hit_box_6[0] <= mouse_x <= hit_box_6[0] + hit_box_6[2] and hit_box_6[1] <= mouse_y <= hit_box_6[1] + \
+                hit_box_6[3]:
             coords = (1, 2)
             hit_box = hit_box_6
 
-        if hit_box_7[0] <= mouse_x <= hit_box_7[0] + hit_box_7[2] and hit_box_7[1] <= mouse_y <= hit_box_7[1] + hit_box_7[3]:
+        if hit_box_7[0] <= mouse_x <= hit_box_7[0] + hit_box_7[2] and hit_box_7[1] <= mouse_y <= hit_box_7[1] + \
+                hit_box_7[3]:
             coords = (2, 0)
             hit_box = hit_box_7
 
-        if hit_box_8[0] <= mouse_x <= hit_box_8[0] + hit_box_8[2] and hit_box_8[1] <= mouse_y <= hit_box_8[1] + hit_box_8[3]:
+        if hit_box_8[0] <= mouse_x <= hit_box_8[0] + hit_box_8[2] and hit_box_8[1] <= mouse_y <= hit_box_8[1] + \
+                hit_box_8[3]:
             coords = (2, 1)
             hit_box = hit_box_8
 
-        if hit_box_9[0] <= mouse_x <= hit_box_9[0] + hit_box_9[2] and hit_box_9[1] <= mouse_y <= hit_box_9[1] + hit_box_9[3]:
+        if hit_box_9[0] <= mouse_x <= hit_box_9[0] + hit_box_9[2] and hit_box_9[1] <= mouse_y <= hit_box_9[1] + \
+                hit_box_9[3]:
             coords = (2, 2)
             hit_box = hit_box_9
 
@@ -118,34 +126,26 @@ class TicTacToeBoardScene:
 
         return coords
 
-
     '''
     Use this function to pass in the current symbol being used by the player (or agent)
     and pass the hitbox obtained from the click or the generated coordinate from the agent 
     using the 'board_to_UI' dictionary. The rendering will be done for you.
     '''
+
     def render_symbol_sprite_from_hitbox_with_symbol(self, hit_box, symbol):
 
         symbol_sprite = self.symbol_dict[symbol]
         sprite_height = SPRITE_DIMENSIONS[0]
         sprite_width = SPRITE_DIMENSIONS[1]
 
-        middle_diff_x =  abs((hit_box[2] / 2) - (sprite_width/2))
+        middle_diff_x = abs((hit_box[2] / 2) - (sprite_width / 2))
         middle_diff_y = abs((hit_box[3] / 2) - (sprite_height / 2))
 
         self.screen.blit(symbol_sprite, (hit_box[0] + middle_diff_x, hit_box[1] + middle_diff_y))
 
         pygame.display.update()
 
-
-
-
-
-
-
     # Helper render functions below
-
-
 
     def prepare_sprite_with_path(self, path):
         sprite = pygame.image.load(path)
@@ -165,7 +165,6 @@ class TicTacToeBoardScene:
         self.screen.blit(prompt_text_surface, (middle_diff, 26))
         pygame.display.update()
 
-
     def render_tie_label(self):
 
         font = pygame.font.Font(FONT_PATH, 36)
@@ -178,7 +177,6 @@ class TicTacToeBoardScene:
 
         self.screen.blit(prompt_text_surface, (middle_diff, 26))
         pygame.display.update()
-
 
     def render_player_winner_with_text(self, text):
 
