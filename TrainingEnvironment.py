@@ -8,6 +8,7 @@ from typing import Any
 import tensorflow as tf
 from tf_agents.typing import types
 
+from random import *
 from TicTacToe import *
 import numpy as np
 
@@ -44,6 +45,8 @@ INTERMEDIATE_REWARD = 0.1
 DISCOUNT_FACTOR = 1.0
 
 class TrainingEnvironment(py_environment.PyEnvironment):
+
+    # For every action the agent chooses from 0 to 9, then this will provide the coordinate into the board.
     action_to_coordinate = {1: (0, 0), 2: (0, 1), 3: (0, 2),
                             4: (1, 0), 5: (1, 1), 6: (1, 2),
                             7: (2, 0), 8: (2, 1), 9: (2, 2)}
@@ -83,9 +86,6 @@ class TrainingEnvironment(py_environment.PyEnvironment):
             self._episode_ended = True
             return ts.termination(np.array(self._state, dtype=self._state.dtype), LOSING_PENALTY)
 
-        self.game.play_round(action_coord)
-        self.game.determine_winner()
-
         if self.game.game_won and self.game.get_winning_player().player_tag == 'Agent':
             self._episode_ended = True
             return ts.termination(np.array(self._state, dtype=self._state.dtype), WINNING_REWARD)
@@ -97,6 +97,9 @@ class TrainingEnvironment(py_environment.PyEnvironment):
         if self.game.tie_game:
             self._episode_ended = True
             return ts.termination(np.array(self._state, dtype=self._state.dtype), TIE_REWARD)
+
+        self.game.play_round(action_coord)
+        self.game.determine_winner()
 
         return ts.transition(np.array(self._state, dtype=self._state.dtype), reward=INTERMEDIATE_REWARD, discount=DISCOUNT_FACTOR)
 
@@ -113,3 +116,15 @@ class TrainingEnvironment(py_environment.PyEnvironment):
 
     def _is_agent_current_player(self):
         return self.game.get_current_player_tag() == 'Agent'
+
+    def _play_random_non_agent(self):
+
+        choice = randrange(1,10)
+        while not self.game.isValidMove(TrainingEnvironment.action_to_coordinate(choice)):
+            choice = randrange(1, 10)
+
+        self.game.play_round(choice)
+        self.game.determine_winner()
+
+    def display_current_state(self):
+        self.game.game_board.display_board()
