@@ -56,13 +56,15 @@ class TrainingEnvironment(py_environment.PyEnvironment):
         self._observation_spec = array_spec.BoundedArraySpec(
             shape=(3,3), dtype=self._state.dtype, minimum=0, maximum=2, name='observation')
 
-    def observation_spec(self) -> types.NestedArraySpec:
+
+    def observation_spec(self):
         return self._observation_spec
 
-    def action_spec(self) -> types.NestedArraySpec:
+    def action_spec(self):
         return self._action_spec
 
     def _step(self, action: types.NestedArray) -> ts.TimeStep:
+
         action_coord = TrainingEnvironment.action_to_coordinate[int(action)]
 
         if self._episode_ended:
@@ -73,29 +75,30 @@ class TrainingEnvironment(py_environment.PyEnvironment):
         # Want it to make the right choice instead of choosing taken spot
         if self._is_spot_taken(action_coord):
             self._episode_ended = True
-            return ts.termination(np.array([self._state], dtype=np.int32), -1)
+            return ts.termination(np.array(self._state, dtype=self._state.dtype), -1)
 
         self.game.play_round(action_coord)
         self.game.determine_winner()
 
         if self.game.game_won and self.game.get_winning_player().player_tag == 'Agent':
             self._episode_ended = True
-            return ts.termination(np.array([self._state], dtype=np.int32), 1)
+            return ts.termination(np.array(self._state, dtype=self._state.dtype), 1)
 
         if self.game.game_won and not self.game.get_winning_player().player_tag == 'Agent':
             self._episode_ended = True
-            return ts.termination(np.array([self._state], dtype=np.int32), -1)
+            return ts.termination(np.array(self._state, dtype=self._state.dtype), -1)
 
         if self.game.tie_game:
             self._episode_ended = True
-            return ts.termination(np.array([self._state], dtype=np.int32), 0)
+            return ts.termination(np.array(self._state, dtype=self._state.dtype), 0)
 
-        return ts.transition(np.array([self._state], dtype=np.int32), reward=0.1, discount=1.0)
+        return ts.transition(np.array(self._state, dtype=self._state.dtype), reward=0.1, discount=1.0)
 
-    def _reset(self) -> ts.TimeStep:
+    def _reset(self):
         self.game = TicTacToe(Player('O', 'Player 1'), Player('X', 'Agent'))
-        self._state = self.game.get_board_grid().flatten()[0]
-        return ts.restart(np.array([self._state], dtype=self._state.dtype))
+        self._state = self.game.get_board_grid()
+        self._episode_ended = False
+        return ts.restart(np.array(self._state, dtype=self._state.dtype))
 
     # Auxilliary helper functions just in case it's needed...
 
