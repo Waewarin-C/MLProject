@@ -64,6 +64,9 @@ class TicTacToe:
             return 1
         return 2
 
+    def is_game_over(self):
+        return self.tie_game or self.game_won
+
     def determine_winner(self):
 
         top_horizontal_band = self.game_board.get_horizontal_band_top()
