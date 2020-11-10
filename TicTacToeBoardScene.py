@@ -70,6 +70,7 @@ class TicTacToeBoardScene:
     # This function will deal with interacting with the game based on screen UI interactions.
     def handle_events(self, event):
 
+
         if self.game_model.tie_game:
             self.render_tie_label()
             return
@@ -77,6 +78,10 @@ class TicTacToeBoardScene:
         if self.game_model.game_won:
             self.render_player_winner_with_text(self.game_model.get_winning_player().player_tag)
             return
+
+        # TODO: Allow the agent to make its play here.
+        if self.use_agent:
+            pass
 
         if event.type == pygame.MOUSEBUTTONUP:
             mouse_x, mouse_y = pygame.mouse.get_pos()
