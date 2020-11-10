@@ -3,7 +3,7 @@ import GameWindow
 from ChooseSymbolScene import *
 from ParallaxEffect import *
 from Trainer import *
-from TrainingEnvironment import *
+from GameEnvironment import *
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)

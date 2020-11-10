@@ -44,22 +44,26 @@ TIE_REWARD = 0
 INTERMEDIATE_REWARD = 0.1
 DISCOUNT_FACTOR = 1.0
 
-class TrainingEnvironment(py_environment.PyEnvironment):
+class GameEnvironment(py_environment.PyEnvironment):
 
     # For every action the agent chooses from 0 to 9, then this will provide the coordinate into the board.
     action_to_coordinate = {1: (0, 0), 2: (0, 1), 3: (0, 2),
                             4: (1, 0), 5: (1, 1), 6: (1, 2),
                             7: (2, 0), 8: (2, 1), 9: (2, 2)}
 
-    def __init__(self):
+    def __init__(self, custom_game=None):
         # One episode = One game round
         self._episode_ended = False
 
-        self.game = TicTacToe(Player('O', 'Player 1'), Player('X', 'Agent'))
+        if custom_game is None: # This condition is a consideration for training.
+            self.game = TicTacToe(Player('O', 'Player 1'), Player('X', 'Agent'))
+        else:
+            self.game = custom_game
+
         self._state = self.game.get_board_grid()
 
         self._action_spec = array_spec.BoundedArraySpec(
-            shape=(), dtype=np.int32, minimum=1, maximum=9, name='action')
+            shape=(), dtype=np.int32, minimum=0, maximum=8, name='action')
 
         # Can be used to see what is or is not taken (0 = not taken).
         self._observation_spec = array_spec.BoundedArraySpec(
@@ -74,7 +78,7 @@ class TrainingEnvironment(py_environment.PyEnvironment):
 
     def _step(self, action: types.NestedArray) -> ts.TimeStep:
 
-        action_coord = TrainingEnvironment.action_to_coordinate[int(action)]
+        action_coord = GameEnvironment.action_to_coordinate[int(action) + 1]
 
         if self._episode_ended:
             # The last action ended the episode. Ignore the current action and start
@@ -120,7 +124,7 @@ class TrainingEnvironment(py_environment.PyEnvironment):
     def _play_random_non_agent(self):
 
         choice = randrange(1,10)
-        while not self.game.isValidMove(TrainingEnvironment.action_to_coordinate(choice)):
+        while not self.game.isValidMove(GameEnvironment.action_to_coordinate(choice)):
             choice = randrange(1, 10)
 
         self.game.play_round(choice)

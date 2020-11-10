@@ -1,6 +1,7 @@
 import GameWindow
 import pygame
 from TicTacToe import *
+from GameEnvironment import *
 
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -23,10 +24,27 @@ board_to_UI = {(0, 0): hit_box_1, (0, 1): hit_box_2, (0, 2): hit_box_3,
                (1, 0): hit_box_4, (1, 1): hit_box_5, (1, 2): hit_box_6,
                (2, 0): hit_box_7, (2, 1): hit_box_8, (2, 2): hit_box_9}
 
+# In the case of using an agent, each action is ranged in this way.
+action_to_coordinate = {1: (0, 0), 2: (0, 1), 3: (0, 2),
+                        4: (1, 0), 5: (1, 1), 6: (1, 2),
+                        7: (2, 0), 8: (2, 1), 9: (2, 2)}
+
 
 class TicTacToeBoardScene:
 
-    def __init__(self, screen, game_model):
+    def __init__(self, screen, game_model, use_agent=False, agent=None):
+
+        self.use_agent = False
+        self.agent = None
+        self.tf_environment = None
+        self.environment = None
+
+        if use_agent and agent is None:
+            raise Exception('Agent cannot be NONE if you specify True')
+
+        if not use_agent and agent is not None:
+            print('Warning: Agent will NOT be used since the use_agent flag is set to False.')
+
         self.screen = screen
         self.screen.fill(WHITE)
         self.game_model = game_model
@@ -37,6 +55,11 @@ class TicTacToeBoardScene:
 
         self.symbol_dict = {'O': self.o_symbol_sprite,
                             'X': self.x_symbol_sprite}
+
+        if use_agent:
+            self.use_agent = True
+            self.agent = agent
+            self.environment = GameEnvironment(custom_game=self.game_model)
 
         self.draw_game_board()
         pygame.display.update()
@@ -160,7 +183,7 @@ class TicTacToeBoardScene:
         middle_diff = abs((GameWindow.window_width / 2) - (width / 2))
 
         pygame.draw.rect(self.screen, WHITE,
-                         [middle_diff, 26, width, prompt_text_surface.get_height()])
+                         [0, 26, GameWindow.window_width, prompt_text_surface.get_height()])
 
         self.screen.blit(prompt_text_surface, (middle_diff, 26))
         pygame.display.update()
@@ -186,7 +209,7 @@ class TicTacToeBoardScene:
         middle_diff = abs((GameWindow.window_width / 2) - (width / 2))
 
         pygame.draw.rect(self.screen, WHITE,
-                         [middle_diff, 26, width, prompt_text_surface.get_height()])
+                         [0, 26, GameWindow.window_width, prompt_text_surface.get_height()])
 
         self.screen.blit(prompt_text_surface, (middle_diff, 26))
         pygame.display.update()
