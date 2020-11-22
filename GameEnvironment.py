@@ -23,6 +23,8 @@ from tf_agents.environments import wrappers
 from tf_agents.environments import suite_gym
 from tf_agents.trajectories import time_step as ts
 
+from Trainer import LOSING_PENALTY, WINNING_REWARD, TIE_REWARD
+
 tf.compat.v1.enable_v2_behavior()
 
 '''
@@ -37,19 +39,12 @@ tf.compat.v1.enable_v2_behavior()
 
 '''
 
-LOSING_PENALTY = -1
-WINNING_REWARD = 1
-TIE_REWARD = 0
-
-INTERMEDIATE_REWARD = 0.1
-DISCOUNT_FACTOR = 1.0
-
 class GameEnvironment(py_environment.PyEnvironment):
 
-    # For every action the agent chooses from 0 to 9, then this will provide the coordinate into the board.
-    action_to_coordinate = {1: (0, 0), 2: (0, 1), 3: (0, 2),
-                            4: (1, 0), 5: (1, 1), 6: (1, 2),
-                            7: (2, 0), 8: (2, 1), 9: (2, 2)}
+    # For every action the agent chooses from 0 to 8, then this will provide the coordinate into the board.
+    action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
+                            3: (1, 0), 4: (1, 1), 5: (1, 2),
+                            6: (2, 0), 7: (2, 1), 8: (2, 2)}
 
     def __init__(self, custom_game=None):
         # One episode = One game round
@@ -78,7 +73,7 @@ class GameEnvironment(py_environment.PyEnvironment):
 
     def _step(self, action: types.NestedArray) -> ts.TimeStep:
 
-        action_coord = GameEnvironment.action_to_coordinate[int(action) + 1]
+        action_coord = GameEnvironment.action_to_coordinate[int(action)]
 
         if self._episode_ended:
             # The last action ended the episode. Ignore the current action and start
