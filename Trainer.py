@@ -27,10 +27,15 @@ class Trainer:
         Q_TABLE = [[Q_INITIALIZER for i in range(9)]]   # store it in one dimension
         STATES[1] = Q_TABLE
 
-    def begin_training(self):
-
-        # Have own while loop to play game
+    def move(self):
         pass
+
+    def finished(self):
+        #reverse the move history
+        #loop through the move history
+        #calculate the q table values based on this history using the tabular calculation
+
+
 
     # From here we can define whatever kind of agent creation we want.
 
