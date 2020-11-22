@@ -24,7 +24,7 @@ class Trainer:
         self.tf_env = tf_py_environment.TFPyEnvironment(self.environment)
 
         self.board = GameBoard()
-        Q_TABLE = [[Q_INITIALIZER for i in range(9)]]   # store it in one dimension
+        Q_TABLE = [[Q_INITIALIZER for i in range(9)] for j in range(255_168)]  # One row for every state, one column for every action
         STATES[1] = Q_TABLE
 
     def move(self):
