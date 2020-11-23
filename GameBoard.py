@@ -74,3 +74,8 @@ class GameBoard:
     def get_diagonal_band_from_top_right(self):
         return np.diag(np.fliplr(self.board))
 
+    # Returns a string representation of the current state. This will be hashed
+    # the same way ONLY in the same program runs. But at least we may be able to save
+    # the key-value pairs
+    def get_board_state(self):
+        str = ''.join(list(map(str, self.board.flatten().flatten())))

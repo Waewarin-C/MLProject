@@ -12,6 +12,8 @@ LEARNING_RATE = 0.9     # alpha
 DISCOUNT_FACTOR = 0.95   # gamma
 Q_INITIALIZER = 0.5
 
+# The states should be the key into the dict. The value should be the columns of Q values. (in this case 9)
+# Board provides a "get_board_state()" function now, that should allow you to index by state.
 STATES = dict()
 Q_TABLE = []
 
@@ -24,7 +26,9 @@ class Trainer:
         self.tf_env = tf_py_environment.TFPyEnvironment(self.environment)
 
         self.board = GameBoard()
-        Q_TABLE = [[Q_INITIALIZER for i in range(9)] for j in range(255_168)]  # One row for every state, one column for every action
+        # TODO: One row for every state, one column for every action. The dict will obtain a new one
+        # THERE ARE 255_168 states possible.
+        Q_TABLE = [Q_INITIALIZER for _ in range(9)]
         STATES[1] = Q_TABLE
 
     def move(self):
