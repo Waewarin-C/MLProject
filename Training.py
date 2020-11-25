@@ -1,11 +1,12 @@
-from Trainer import *
+from TabularTrainer import *
 
 class EvaluateTraining:
 
     def begin_training(self):
         # Have own while loop to play game
-        agent1 = Trainer()
-        agent2 = Trainer()
+        agent1 = TabularTrainer()
+        agent2 = TabularTrainer()
+        print("training started")
 
     def playGame(board, agent1, agent2):
         #play a round

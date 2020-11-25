@@ -1,5 +1,6 @@
-from GameEnvironment import *
+import GameEnvironment
 from GameBoard import *
+from tf_agents.environments import tf_py_environment
 from random import *
 
 NUM_EPISODES = 1_000
@@ -19,10 +20,10 @@ Q_TABLE = []
 
 # TODO: find a way to save the trained agent
 
-class Trainer:
+class TabularTrainer:
 
     def __init__(self):
-        self.environment = GameEnvironment()
+        self.environment = GameEnvironment.GameEnvironment()
         self.tf_env = tf_py_environment.TFPyEnvironment(self.environment)
 
         self.board = GameBoard()
@@ -35,6 +36,7 @@ class Trainer:
         pass
 
     def finished(self):
+        pass
         #reverse the move history
         #loop through the move history
         #calculate the q table values based on this history using the tabular calculation

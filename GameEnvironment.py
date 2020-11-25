@@ -23,7 +23,7 @@ from tf_agents.environments import wrappers
 from tf_agents.environments import suite_gym
 from tf_agents.trajectories import time_step as ts
 
-from Trainer import LOSING_PENALTY, WINNING_REWARD, TIE_REWARD
+from TabularTrainer import LOSING_PENALTY, WINNING_REWARD, TIE_REWARD
 
 tf.compat.v1.enable_v2_behavior()
 
@@ -40,7 +40,6 @@ tf.compat.v1.enable_v2_behavior()
 '''
 
 class GameEnvironment(py_environment.PyEnvironment):
-
     # For every action the agent chooses from 0 to 8, then this will provide the coordinate into the board.
     action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
                             3: (1, 0), 4: (1, 1), 5: (1, 2),

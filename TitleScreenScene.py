@@ -2,7 +2,7 @@ import pygame
 import GameWindow
 from ChooseSymbolScene import *
 from ParallaxEffect import *
-from Trainer import *
+from Training import *
 from GameEnvironment import *
 
 BLACK = (0, 0, 0)
@@ -122,7 +122,7 @@ class TitleScreenScene:
                 if x1 <= mouse_x <= x2 and y1 <= mouse_y <= y2:
 
                     if id == 'Train Agent':
-                        trainer = Trainer()
+                        trainer = EvaluateTraining()
                         trainer.begin_training()
                         break
 
