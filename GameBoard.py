@@ -78,4 +78,5 @@ class GameBoard:
     # the same way ONLY in the same program runs. But at least we may be able to save
     # the key-value pairs
     def get_board_state(self):
-        str = ''.join(list(map(str, self.board.flatten().flatten())))
+        strBoardState = ''.join(list(map(str, self.board.flatten().flatten())))
+        return strBoardState

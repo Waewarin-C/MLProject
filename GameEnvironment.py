@@ -23,7 +23,7 @@ from tf_agents.environments import wrappers
 from tf_agents.environments import suite_gym
 from tf_agents.trajectories import time_step as ts
 
-from TabularTrainer import LOSING_PENALTY, WINNING_REWARD, TIE_REWARD
+from Training import LOSING_PENALTY, WINNING_REWARD, TIE_REWARD
 
 tf.compat.v1.enable_v2_behavior()
 

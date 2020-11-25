@@ -122,7 +122,7 @@ class TitleScreenScene:
                 if x1 <= mouse_x <= x2 and y1 <= mouse_y <= y2:
 
                     if id == 'Train Agent':
-                        trainer = EvaluateTraining()
+                        trainer = Training()
                         trainer.begin_training()
                         break
 
