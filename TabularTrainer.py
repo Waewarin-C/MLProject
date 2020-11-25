@@ -24,12 +24,13 @@ action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
 class TabularTrainer(Player):
 
     def __init__(self, player_symbol, player_tag):
-        self.environment = GameEnvironment.GameEnvironment()
-        self.tf_env = tf_py_environment.TFPyEnvironment(self.environment)
+        super().__init__(player_symbol, player_tag)
+        #self.environment = GameEnvironment.GameEnvironment()
+        #self.tf_env = tf_py_environment.TFPyEnvironment(self.environment)
         # TODO: One row for every state, one column for every action. The dict will obtain a new one
         # THERE ARE 255_168 states possible.
-        self.player_symbol = player_symbol
-        self.player_tag = player_tag
+        #self.player_symbol = player_symbol
+        #self.player_tag = player_tag
         self.queue = {}
         self.playHistory = []
 

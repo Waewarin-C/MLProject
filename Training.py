@@ -17,6 +17,16 @@ class Training:
         self.battleRounds()
         print("training started")
 
+    def battleRounds(self):
+        agent1 = TabularTrainer('O', 'Agent 1')
+        agent2 = TabularTrainer('X', 'Agent 2')
+        drawCount = 0
+        agent1Count = 0
+        agent2Count = 0
+        self.playGame(agent1, agent2)
+        #TODO: I was think we can just do battle rounds vs the running 10000 time 10 games etc.
+        #initiate the playGame for the players
+        #update the counts for win, loss, or draw
 
     def playGame(self, agent1, agent2):
         game = TicTacToe(agent1, agent2)
@@ -50,17 +60,6 @@ class Training:
         game.game_board.setSpaceTaken(coord)
         finished = game.is_game_over()
         return finished
-
-    def battleRounds(self):
-        agent1 = TabularTrainer('O', 1)
-        agent2 = TabularTrainer('X', 2)
-        drawCount = 0
-        agent1Count = 0
-        agent2Count = 0
-        self.playGame(agent1, agent2)
-        #TODO: I was think we can just do battle rounds vs the running 10000 time 10 games etc.
-        #initiate the playGame for the players
-        #update the counts for win, loss, or draw
 
 #TODO: I was thinking we could use this function to compare the two agents or data over time
 '''

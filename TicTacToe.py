@@ -10,7 +10,7 @@ class TicTacToe:
         if player_one is None or player_two is None:
             raise ValueError("Players must be provided.")
 
-        if type(player_one) != Player or type(player_two) != Player:
+        if not isinstance(player_one, Player) or not isinstance(player_two, Player):
             raise ValueError("Players must be of the Player class.")
 
         self.current_player_index = 0;
