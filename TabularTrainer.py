@@ -36,13 +36,8 @@ class TabularTrainer(Player):
 
     def move(self, board) -> int:
         boardState = board.get_board_state()
-        queueValues = np.empty([0, 9])
+        queueValues = self.get_state_q_values(boardState)
 
-        if boardState in self.queue:
-            queueValues = self.queue[boardState]
-        else:
-            queueValues = [Q_INITIALIZER for i in range(9)]
-            self.queue[boardState] = queueValues
         while True:
             move = np.argmax(queueValues)
             coord = action_to_coordinate[move]
@@ -54,6 +49,19 @@ class TabularTrainer(Player):
             else:
                 self.playHistory.append((board.get_board_state(), move))
                 return move
+
+    # We will build the Q table in a lazy way
+    # So we will only add the state when it is the first time it is seen
+    def get_state_q_values(self, boardState) -> np.ndarray:
+        queueValues = np.empty([0, 9])
+
+        if boardState in self.queue:
+            queueValues = self.queue[boardState]
+        else:
+            queueValues = [Q_INITIALIZER for i in range(9)]
+            self.queue[boardState] = queueValues
+
+        return queueValues
 
     def result(self):
         pass
