@@ -9,28 +9,51 @@ action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
 #NOTE: tried to keep anything updating the board in this tile so we could use the TicTacToe functions
 class Training:
 
-    def begin_training(self):
+    def begin_training(self, number_of_battles = 100):
         # Have own while loop to play game
-        self.battleRounds()
-        print("training started")
 
-    def battleRounds(self):
+        agent1_wins = []
+        agent2_wins = []
+        draws = []
+        count = []
+
+        print("training started")
+        for i in range(0, number_of_battles):
+            agent1Win, agent2Win, draw = self.battleRounds()
+
+            # TODO: append the wins and draws to the appropriate list
+            # Need to figure out the math depending on the number of games
+            # we want it to show like in the example code (I might not have explained that clearly oops)
+
+        # TODO: hopefully plot the number of games each agent wins and ties
+        #self.visualize_training_results(agent1_wins, agent2_wins, draws)
+
+    def battleRounds(self, number_of_games = 100):
         agent1 = TabularTrainer('O', 'Agent 1')
         agent2 = TabularTrainer('X', 'Agent 2')
-        drawCount = 0
-        agent1Count = 0
-        agent2Count = 0
-        self.playGame(agent1, agent2)
-        #TODO: I was think we can just do battle rounds vs the running 10000 time 10 games etc.
-        #initiate the playGame for the players
-        #update the counts for win, loss, or draw
 
-    def playGame(self, agent1, agent2):
+        agent1WinCount = 0
+        agent2WinCount = 0
+        drawCount = 0
+
+        for i in range(0, number_of_games):
+            winner = self.playGame(agent1, agent2)
+            if winner == 1:
+                agent1WinCount += 1
+            elif winner == 2:
+                agent2WinCount += 1
+            else:
+                drawCount += 1
+
+        # TODO: I was think we can just do battle rounds vs the running 10000 time 10 games etc.
+
+        return agent1WinCount, agent2WinCount, drawCount
+
+    def playGame(self, agent1, agent2, number_of_games = 100) -> int:
         game = TicTacToe(agent1, agent2)
 
         finished = False
         print("start loop")
-        i = 0
         while not finished:
             finished = self.evaluateMove(agent1, game)
             if finished:
@@ -39,11 +62,11 @@ class Training:
                 finished = self.evaluateMove(agent2, game)
                 if finished:
                     break
-            i = i + 1
 
         game.determine_winner()
 
-        self.get_game_results(game, agent1, agent2)
+        winner = self.get_game_results(game, agent1, agent2)
+        return winner
 
     def evaluateMove(self, agent, game):
         move = agent.move(game.game_board)
@@ -61,14 +84,18 @@ class Training:
 
         return finished
 
-    def get_game_results(self, game, agent1, agent2):
+    def get_game_results(self, game, agent1, agent2) -> int:
+        winner = 0
+
         if game.game_won:
             if game.winning_player == game.player_one:
                 agent1.result("won")
                 agent2.result("loss")
+                winner = 1
             else:
                 agent1.result("loss")
                 agent2.result("won")
+                winner = 2
         elif game.tie_game:
             agent1.result("tie")
             agent2.result("tie")
@@ -76,6 +103,8 @@ class Training:
         higher_q_values = self.see_who_has_higher_qvalues(agent1.final_q_values, agent2.final_q_values)
 
         # TODO: find a way to save the higher_q_values
+
+        return winner
 
     def see_who_has_higher_qvalues(self, agent1_q_values, agent2_q_values):
         agent1 = 0.0
@@ -92,6 +121,11 @@ class Training:
 
         # Default would be if the q values are equal
         return agent1_q_values
+
+    #Plot the number of games each agent wins and ties
+    def visualize_training_results(self, agent1_wins, agent2_wins, draws):
+        pass
+        # Code for plotting a graph
 
 #TODO: I was thinking we could use this function to compare the two agents or data over time
 '''
