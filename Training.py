@@ -30,7 +30,6 @@ class Training:
 
     def playGame(self, agent1, agent2):
         game = TicTacToe(agent1, agent2)
-        gameResult = 0;
 
         finished = False
         print("start loop")
@@ -44,21 +43,31 @@ class Training:
                 if finished:
                     break
             i = i + 1
-        gameResult = game.determine_winner()
-        #TODO: gameResult not calculating correctly
 
-        #TODO: make a function similar to final_result in example code
-        #agent1.result(gameResult)
-        #agent2.result(gameResult)
-        return gameResult
+        # TODO: gameResult not calculating correctly
+        game.determine_winner()
+
+        if game.game_won == True:
+            pass
+            # logic for getting the game result for the winner
+            #if game.winning_player == game.player_one
+                # agent1.result(gameResult)
+            #else:
+                # agent2.result(gameResult)
+        elif game.tie_game == True:
+            pass
+            # logic for getting the game result for the tied game
 
     def evaluateMove(self, agent, game):
         move = agent.move(game.game_board)
+
         if move == -1:
             return True
+
         coord = action_to_coordinate[move]
         game.game_board.setSpaceTaken(coord)
         finished = game.is_game_over()
+
         return finished
 
 #TODO: I was thinking we could use this function to compare the two agents or data over time

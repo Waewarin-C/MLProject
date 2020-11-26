@@ -63,7 +63,8 @@ class TabularTrainer(Player):
 
         return queueValues
 
-    def result(self):
+    # TODO: make a function similar to final_result in example code
+    def result(self, gameResult):
         pass
         # reverse the move history
         # loop through the move history
