@@ -1,9 +1,4 @@
-from typing import Dict, Tuple
-import GameEnvironment
 from GameBoard import *
-from tf_agents.environments import tf_py_environment
-from random import *
-
 from Player import Player
 
 NUM_EPISODES = 1_000
@@ -27,10 +22,6 @@ class TabularTrainer(Player):
 
     def __init__(self, player_symbol, player_tag):
         super().__init__(player_symbol, player_tag)
-        #self.environment = GameEnvironment.GameEnvironment()
-        #self.tf_env = tf_py_environment.TFPyEnvironment(self.environment)
-        # TODO: One row for every state, one column for every action. The dict will obtain a new one
-        # THERE ARE 255_168 states possible.
 
         self.queue = {}
         self.playHistory = []
@@ -69,7 +60,6 @@ class TabularTrainer(Player):
 
         return queueValues
 
-    # TODO: make a function similar to final_result in example code
     def result(self, gameResult) -> np.ndarray:
         if gameResult is "won":
             final_value = WINNING_REWARD
