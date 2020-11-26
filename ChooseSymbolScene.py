@@ -3,6 +3,7 @@ import GameWindow
 import TitleScreenScene
 import TicTacToeBoardScene
 from ParallaxEffect import *
+from TabularTrainer import *
 from TicTacToe import *
 from Player import *
 from GameEnvironment import *
@@ -60,7 +61,7 @@ class ChooseSymbolScene:
                 if self.game_id == 'Player vs. Player':
                     game_model = TicTacToe(Player('O', 'Player 1'), Player('X', 'Player 2'))
                 else:
-                    game_model = TicTacToe(Player('O', 'Player 1'), Player('X', 'Agent'))
+                    game_model = TicTacToe(Player('O', 'Player 1'), TabularTrainer('X', 'Agent'))
 
                 GameWindow.GameWindowFoundation.scene = TicTacToeBoardScene.TicTacToeBoardScene(self.screen, game_model)
 
@@ -72,7 +73,7 @@ class ChooseSymbolScene:
                     GameWindow.GameWindowFoundation.scene = TicTacToeBoardScene.TicTacToeBoardScene(self.screen,
                                                                                                     game_model)
                 else:
-                    game_model = TicTacToe(Player('X', 'Player 1'), Player('O', 'Agent'))
+                    game_model = TicTacToe(Player('X', 'Player 1'), TabularTrainer('O', 'Agent'))
                     GameWindow.GameWindowFoundation.scene = TicTacToeBoardScene.TicTacToeBoardScene(self.screen,
                                                                                                     game_model)
 
