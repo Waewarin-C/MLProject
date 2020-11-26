@@ -13,18 +13,15 @@ DISCOUNT_FACTOR = 0.95  # gamma
 
 Q_INITIALIZER = 0.5
 
-WINNING_REWARD = 1
+WINNING_REWARD = 1.0
 TIE_REWARD = 0.5
-LOSING_PENALTY = 0
+LOSING_PENALTY = 0.0
 
 # The states should be the key into the dict. The value should be the columns of Q values. (in this case 9)
 # Board provides a "get_board_state()" function now, that should allow you to index by state.
 action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
                         3: (1, 0), 4: (1, 1), 5: (1, 2),
                         6: (2, 0), 7: (2, 1), 8: (2, 2)}
-
-
-# TODO: find a way to save the trained agent
 
 class TabularTrainer(Player):
 
@@ -38,7 +35,9 @@ class TabularTrainer(Player):
         self.queue = {}
         self.playHistory = []
 
-    def move(self, board, game) -> int:
+        self.final_q_values = np.empty([0, 9])
+
+    def move(self, board) -> int:
         boardState = board.get_board_state()
         queueValues = self.get_state_q_values(boardState)
         #print(queueValues)
@@ -48,7 +47,7 @@ class TabularTrainer(Player):
             coord = action_to_coordinate[move]
 
             max = np.max(queueValues)
-            if max == -1:
+            if max == -1.0:
                 return max
 
             if board.isSpaceTaken(coord):
@@ -71,16 +70,34 @@ class TabularTrainer(Player):
         return queueValues
 
     # TODO: make a function similar to final_result in example code
-    def result(self, gameResult):
-        if gameResult is self:
-            print("Yes me")
-        else:
-            print("Not me")
-        # reverse the move history
-        # loop through the move history
-        # calculate the q table values based on this history using the tabular calculation
+    def result(self, gameResult) -> np.ndarray:
+        if gameResult is "won":
+            final_value = WINNING_REWARD
+        elif gameResult is "loss":
+            final_value = LOSING_PENALTY
+        elif gameResult is "tie":
+            final_value = TIE_REWARD
 
-    # From here we can define whatever kind of agent creation we want.
+        # Must reverse the play history because we will be working backwards
+        self.playHistory.reverse()
+        next_max_value = -1.0
+
+        for history in self.playHistory:
+            self.final_q_values = self.get_state_q_values(history[0])
+
+            if next_max_value < 0:  # This will be the first time through the loop
+                # The final step taken is the step that made the agent win, lose, or tie
+                # so it will get the value that corresponds to the its winning status
+                self.final_q_values[history[1]] = final_value
+            else:
+                # Work backwards to get the actual (or rather appropriate q values)
+                # for each step further and further away from the final step
+                # The q value for each state/step will decrease each time as it becomes
+                # less important it is to the agent winning the game the further back we go
+                # thus the use of the learning rate and the discount factor
+                self.final_q_values[history[1]] = self.final_q_values[history[1]] * (1.0 - LEARNING_RATE) + LEARNING_RATE * DISCOUNT_FACTOR * next_max_value
+
+            next_max_value = max(self.final_q_values)
 
     # possible TODO if it even shows up
     def visualize(self):

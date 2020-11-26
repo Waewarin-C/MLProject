@@ -46,7 +46,7 @@ class Training:
         self.get_game_results(game, agent1, agent2)
 
     def evaluateMove(self, agent, game):
-        move = agent.move(game.game_board, game)
+        move = agent.move(game.game_board)
 
         if move == -1:
             return True
@@ -62,19 +62,36 @@ class Training:
         return finished
 
     def get_game_results(self, game, agent1, agent2):
-        print("game results")
-        if game.game_won == True:
-            print("game won")
+        if game.game_won:
             if game.winning_player == game.player_one:
-                print("player 1 won")
-                agent1.result(game.player_one)
+                agent1.result("won")
+                agent2.result("loss")
             else:
-                print("player 2 won")
-                agent2.result(game.player_two)
-        elif game.tie_game == True:
-            print("game tie")
-            #pass
-            # logic for getting the game result for the tied game
+                agent1.result("loss")
+                agent2.result("won")
+        elif game.tie_game:
+            agent1.result("tie")
+            agent2.result("tie")
+
+        higher_q_values = self.see_who_has_higher_qvalues(agent1.final_q_values, agent2.final_q_values)
+
+        # TODO: find a way to save the higher_q_values
+
+    def see_who_has_higher_qvalues(self, agent1_q_values, agent2_q_values):
+        agent1 = 0.0
+        agent2 = 0.0
+
+        for i in range(0, len(agent1_q_values)):
+            agent1 += agent1_q_values[i]
+            agent2 += agent2_q_values[i]
+
+        if agent1 > agent2:
+            return agent1_q_values
+        elif agent1 < agent2:
+            return agent2_q_values
+
+        # Default would be if the q values are equal
+        return agent1_q_values
 
 #TODO: I was thinking we could use this function to compare the two agents or data over time
 '''
