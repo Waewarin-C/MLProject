@@ -10,7 +10,12 @@ NUM_EPISODES = 1_000
 
 LEARNING_RATE = 0.9  # alpha
 DISCOUNT_FACTOR = 0.95  # gamma
+
 Q_INITIALIZER = 0.5
+
+WINNING_REWARD = 1
+TIE_REWARD = 0.5
+LOSING_PENALTY = 0
 
 # The states should be the key into the dict. The value should be the columns of Q values. (in this case 9)
 # Board provides a "get_board_state()" function now, that should allow you to index by state.
@@ -29,21 +34,23 @@ class TabularTrainer(Player):
         #self.tf_env = tf_py_environment.TFPyEnvironment(self.environment)
         # TODO: One row for every state, one column for every action. The dict will obtain a new one
         # THERE ARE 255_168 states possible.
-        #self.player_symbol = player_symbol
-        #self.player_tag = player_tag
+
         self.queue = {}
         self.playHistory = []
 
-    def move(self, board) -> int:
+    def move(self, board, game) -> int:
         boardState = board.get_board_state()
         queueValues = self.get_state_q_values(boardState)
+        #print(queueValues)
 
         while True:
             move = np.argmax(queueValues)
             coord = action_to_coordinate[move]
+
             max = np.max(queueValues)
             if max == -1:
                 return max
+
             if board.isSpaceTaken(coord):
                 queueValues[move] = -1.0
             else:
@@ -65,7 +72,10 @@ class TabularTrainer(Player):
 
     # TODO: make a function similar to final_result in example code
     def result(self, gameResult):
-        pass
+        if gameResult is self:
+            print("Yes me")
+        else:
+            print("Not me")
         # reverse the move history
         # loop through the move history
         # calculate the q table values based on this history using the tabular calculation

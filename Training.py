@@ -5,9 +5,6 @@ from TicTacToe import *
 action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
                         3: (1, 0), 4: (1, 1), 5: (1, 2),
                         6: (2, 0), 7: (2, 1), 8: (2, 2)}
-LOSING_PENALTY = 0
-WINNING_REWARD = 1
-TIE_REWARD = 0.5
 
 #NOTE: tried to keep anything updating the board in this tile so we could use the TicTacToe functions
 class Training:
@@ -44,31 +41,40 @@ class Training:
                     break
             i = i + 1
 
-        # TODO: gameResult not calculating correctly
         game.determine_winner()
 
-        if game.game_won == True:
-            pass
-            # logic for getting the game result for the winner
-            #if game.winning_player == game.player_one
-                # agent1.result(gameResult)
-            #else:
-                # agent2.result(gameResult)
-        elif game.tie_game == True:
-            pass
-            # logic for getting the game result for the tied game
+        self.get_game_results(game, agent1, agent2)
 
     def evaluateMove(self, agent, game):
-        move = agent.move(game.game_board)
+        move = agent.move(game.game_board, game)
 
         if move == -1:
             return True
 
         coord = action_to_coordinate[move]
+
+        game.play_round(coord)
+
         game.game_board.setSpaceTaken(coord)
+
         finished = game.is_game_over()
 
         return finished
+
+    def get_game_results(self, game, agent1, agent2):
+        print("game results")
+        if game.game_won == True:
+            print("game won")
+            if game.winning_player == game.player_one:
+                print("player 1 won")
+                agent1.result(game.player_one)
+            else:
+                print("player 2 won")
+                agent2.result(game.player_two)
+        elif game.tie_game == True:
+            print("game tie")
+            #pass
+            # logic for getting the game result for the tied game
 
 #TODO: I was thinking we could use this function to compare the two agents or data over time
 '''
