@@ -125,6 +125,13 @@ class Training:
 
     #Plot the number of games each agent wins and ties
     def visualize_training_results(self, gameNum, agent1_wins, agent2_wins, draws):
-        plt.plot(gameNum, agent1_wins, agent2_wins, draws)
+        plt.plot(gameNum, agent1_wins)
+        plt.plot(gameNum, agent2_wins)
+        plt.plot(gameNum, draws)
+        plt.title('Battle Round Metrics')
+        plt.legend(['Agent 1 Wins', 'Agent 2 Wins', 'Draws'])
+        plt.xticks(np.arange(1, len(gameNum)+1, step=1))
+        plt.xlabel('Battle Round Number')
+        plt.ylabel('Number of Agent Wins or Draws')
         plt.show()
         # Code for plotting a graph
