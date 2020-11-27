@@ -1,6 +1,6 @@
 from TabularTrainer import *
-from GameBoard import *
 from TicTacToe import *
+import matplotlib.pyplot as plt
 
 action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
                         3: (1, 0), 4: (1, 1), 5: (1, 2),
@@ -9,26 +9,29 @@ action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
 #NOTE: tried to keep anything updating the board in this tile so we could use the TicTacToe functions
 class Training:
 
-    def begin_training(self, number_of_battles = 100):
+    def begin_training(self, number_of_battles = 2):
         # Have own while loop to play game
 
         agent1_wins = []
         agent2_wins = []
         draws = []
         count = []
+        counter = 0
 
         print("training started")
         for i in range(0, number_of_battles):
             agent1Win, agent2Win, draw = self.battleRounds()
-
-            # TODO: append the wins and draws to the appropriate list
             # Need to figure out the math depending on the number of games
             # we want it to show like in the example code (I might not have explained that clearly oops)
+            agent1_wins.append(agent1Win)
+            agent2_wins.append(agent2Win)
+            draws.append(draw)
+            counter = counter + 1
+            count.append(counter)
 
-        # TODO: hopefully plot the number of games each agent wins and ties
-        #self.visualize_training_results(agent1_wins, agent2_wins, draws)
+        self.visualize_training_results(count, agent1_wins, agent2_wins, draws)
 
-    def battleRounds(self, number_of_games = 100):
+    def battleRounds(self, number_of_games = 5):
         agent1 = TabularTrainer('O', 'Agent 1')
         agent2 = TabularTrainer('X', 'Agent 2')
 
@@ -44,8 +47,6 @@ class Training:
                 agent2WinCount += 1
             else:
                 drawCount += 1
-
-        # TODO: I was think we can just do battle rounds vs the running 10000 time 10 games etc.
 
         return agent1WinCount, agent2WinCount, drawCount
 
@@ -123,15 +124,7 @@ class Training:
         return agent1_q_values
 
     #Plot the number of games each agent wins and ties
-    def visualize_training_results(self, agent1_wins, agent2_wins, draws):
-        pass
+    def visualize_training_results(self, gameNum, agent1_wins, agent2_wins, draws):
+        plt.plot(gameNum, agent1_wins, agent2_wins, draws)
+        plt.show()
         # Code for plotting a graph
-
-#TODO: I was thinking we could use this function to compare the two agents or data over time
-'''
-    def evalv(board, agent1, agent2):
-        #play the game for a number rounds
-        #use the move history to calcu
-        #at the end, the best players qtable weights are the ones we save
-        pass
-'''
