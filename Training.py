@@ -14,7 +14,7 @@ action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
 #NOTE: tried to keep anything updating the board in this tile so we could use the TicTacToe functions
 class Training:
 
-    def begin_training(self, number_of_battles = 20):
+    def begin_training(self, number_of_battles = 100):
         # Have own while loop to play game
         agent1_wins = []
         agent2_wins = []
@@ -36,7 +36,7 @@ class Training:
 
         self.visualize_training_results(count, agent1_wins, agent2_wins, draws)
 
-    def battleRounds(self, number_of_games = 50):
+    def battleRounds(self, number_of_games = 100):
         agent1 = TabularTrainer('O', 'Agent 1')
         #agent2 = NNQTrainer('X', 'Agent 2')
         #agent2 = TabularTrainer('X', 'Agent 2')
@@ -106,14 +106,14 @@ class Training:
                 winner = 2
         elif game.tie_game:
             agent1.result("tie")
-          #  agent2.result("tie")
+            #agent2.result("tie")
 
         #Tabular Trainer against itself
         #higher_q_values = self.see_who_has_higher_qvalues(agent1.final_q_values, agent2.final_q_values)
         #Tabular against Random Player
         higher_q_values = agent1.final_q_values
         #Q Learner NN
-       # higher_q_values = self.see_who_has_higher_qvalues(agent1.final_q_values,agent2.NN.queueValues)
+        #higher_q_values = self.see_who_has_higher_qvalues(agent1.final_q_values,agent2.NN.queueValues)
         self.save_to_file(higher_q_values)
 
         return winner
