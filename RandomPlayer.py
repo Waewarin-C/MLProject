@@ -13,7 +13,6 @@ class RandomPlayer(Player):
 
     def move(self, board) -> int:
         boardState = board.get_board_state()
-        print(boardState)
 
         check = False
         for i in boardState:
