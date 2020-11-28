@@ -23,3 +23,6 @@ class Player:
 
     def get_player_symbol(self):
         return self.player_symbol
+
+    def get_player_tag(self):
+        return self.player_tag

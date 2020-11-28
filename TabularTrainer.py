@@ -31,7 +31,6 @@ class TabularTrainer(Player):
     def move(self, board) -> int:
         boardState = board.get_board_state()
         queueValues = self.get_state_q_values(boardState)
-        #print(queueValues)
 
         while True:
             move = np.argmax(queueValues)
