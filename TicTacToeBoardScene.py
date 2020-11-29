@@ -84,8 +84,8 @@ class TicTacToeBoardScene:
             self.game_model.determine_winner()
 
             if self.game_model.game_won:
+                pygame.event.post(Event(1))
                 return
-
 
             self.render_player_prompt_with_text(self.game_model.get_current_player_tag())
             return
@@ -100,10 +100,11 @@ class TicTacToeBoardScene:
             self.game_model.play_round(board_coords)
             self.game_model.determine_winner()
             if self.game_model.game_won:
+                pygame.event.post(Event(1))
                 return
 
             self.render_player_prompt_with_text(self.game_model.get_current_player_tag())
-            pygame.event.post(Event(1))
+
 
 
     def get_board_coordinates_from_click_and_render(self, mouse_x, mouse_y, current_player_symbol):
