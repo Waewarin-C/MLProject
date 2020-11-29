@@ -103,6 +103,9 @@ class TicTacToeBoardScene:
                 pygame.event.post(Event(1))
                 return
 
+            if self.use_agent:
+                pygame.event.post(Event(1))
+
             self.render_player_prompt_with_text(self.game_model.get_current_player_tag())
 
 
