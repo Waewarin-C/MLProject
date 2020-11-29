@@ -1,3 +1,5 @@
+from pygame.event import Event
+
 import GameWindow
 import pygame
 from TicTacToe import *
@@ -32,18 +34,11 @@ action_to_coordinate = {1: (0, 0), 2: (0, 1), 3: (0, 2),
 
 class TicTacToeBoardScene:
 
-    def __init__(self, screen, game_model, use_agent=False, agent=None):
+    def __init__(self, screen, game_model, use_agent=False):
 
         self.use_agent = False
-        self.agent = None
         self.tf_environment = None
         self.environment = None
-
-        if use_agent and agent is None:
-            raise Exception('Agent cannot be NONE if you specify True')
-
-        if not use_agent and agent is not None:
-            print('Warning: Agent will NOT be used since the use_agent flag is set to False.')
 
         self.screen = screen
         self.screen.fill(WHITE)
@@ -58,8 +53,6 @@ class TicTacToeBoardScene:
 
         if use_agent:
             self.use_agent = True
-            self.agent = agent
-            self.environment = GameEnvironment(custom_game=self.game_model)
 
         self.draw_game_board()
         pygame.display.update()
@@ -70,7 +63,6 @@ class TicTacToeBoardScene:
     # This function will deal with interacting with the game based on screen UI interactions.
     def handle_events(self, event):
 
-
         if self.game_model.tie_game:
             self.render_tie_label()
             return
@@ -80,7 +72,8 @@ class TicTacToeBoardScene:
             return
 
         # TODO: Allow the agent to make its play here.
-        if self.use_agent:
+        if self.use_agent and self.game_model.get_player_number() == 2:
+            print('AHH')
             pass
 
         if event.type == pygame.MOUSEBUTTONUP:
@@ -96,6 +89,7 @@ class TicTacToeBoardScene:
                 return
 
             self.render_player_prompt_with_text(self.game_model.get_current_player_tag())
+            pygame.event.post(Event(1))
 
     def get_board_coordinates_from_click_and_render(self, mouse_x, mouse_y, current_player_symbol):
 

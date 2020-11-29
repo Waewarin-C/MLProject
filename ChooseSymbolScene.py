@@ -60,10 +60,13 @@ class ChooseSymbolScene:
 
                 if self.game_id == 'Player vs. Player':
                     game_model = TicTacToe(Player('O', 'Player 1'), Player('X', 'Player 2'))
+                    GameWindow.GameWindowFoundation.scene = TicTacToeBoardScene.TicTacToeBoardScene(self.screen,
+                                                                                                    game_model,
+                                                                                                    use_agent=False)
                 else:
                     game_model = TicTacToe(Player('O', 'Player 1'), TabularTrainer('X', 'Agent'))
+                    GameWindow.GameWindowFoundation.scene = TicTacToeBoardScene.TicTacToeBoardScene(self.screen, game_model, use_agent=True)
 
-                GameWindow.GameWindowFoundation.scene = TicTacToeBoardScene.TicTacToeBoardScene(self.screen, game_model)
 
             # X symbol
             if 310 <= mouse_coords[0] <= 310 + 200 and 175 <= mouse_coords[1] <= 175 + 200:
@@ -71,9 +74,8 @@ class ChooseSymbolScene:
                 if self.game_id == 'Player vs. Player':
                     game_model = TicTacToe(Player('X', 'Player 1'), Player('O', 'Player 2'))
                     GameWindow.GameWindowFoundation.scene = TicTacToeBoardScene.TicTacToeBoardScene(self.screen,
-                                                                                                    game_model)
+                                                                                                    game_model,
+                                                                                                    use_agent=False)
                 else:
                     game_model = TicTacToe(Player('X', 'Player 1'), TabularTrainer('O', 'Agent'))
-                    GameWindow.GameWindowFoundation.scene = TicTacToeBoardScene.TicTacToeBoardScene(self.screen,
-                                                                                                    game_model)
-
+                    GameWindow.GameWindowFoundation.scene = TicTacToeBoardScene.TicTacToeBoardScene(self.screen, game_model, use_agent=True)
