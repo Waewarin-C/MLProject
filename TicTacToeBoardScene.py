@@ -83,7 +83,7 @@ class TicTacToeBoardScene:
             self.render_symbol_sprite_from_hitbox_with_symbol(hit_box, agent_symbol)
             self.game_model.determine_winner()
 
-            if self.game_model.game_won:
+            if self.game_model.game_won or self.game_model.tie_game:
                 pygame.event.post(Event(1))
                 return
 
@@ -99,7 +99,7 @@ class TicTacToeBoardScene:
 
             self.game_model.play_round(board_coords)
             self.game_model.determine_winner()
-            if self.game_model.game_won:
+            if self.game_model.game_won or self.game_model.tie_game:
                 pygame.event.post(Event(1))
                 return
 
