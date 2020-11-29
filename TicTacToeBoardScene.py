@@ -27,9 +27,9 @@ board_to_UI = {(0, 0): hit_box_1, (0, 1): hit_box_2, (0, 2): hit_box_3,
                (2, 0): hit_box_7, (2, 1): hit_box_8, (2, 2): hit_box_9}
 
 # In the case of using an agent, each action is ranged in this way.
-action_to_coordinate = {1: (0, 0), 2: (0, 1), 3: (0, 2),
-                        4: (1, 0), 5: (1, 1), 6: (1, 2),
-                        7: (2, 0), 8: (2, 1), 9: (2, 2)}
+action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
+                        3: (1, 0), 4: (1, 1), 5: (1, 2),
+                        6: (2, 0), 7: (2, 1), 8: (2, 2)}
 
 
 class TicTacToeBoardScene:
@@ -73,8 +73,22 @@ class TicTacToeBoardScene:
 
         # TODO: Allow the agent to make its play here.
         if self.use_agent and self.game_model.get_player_number() == 2:
-            print('AHH')
-            pass
+            agent = self.game_model.get_current_player()
+            move = agent.move(self.game_model.game_board)
+            coord = action_to_coordinate[move]
+            agent_symbol = self.game_model.get_current_player().get_player_symbol()
+            hit_box = board_to_UI[coord]
+            self.game_model.play_round(coord)
+
+            self.render_symbol_sprite_from_hitbox_with_symbol(hit_box, agent_symbol)
+            self.game_model.determine_winner()
+
+            if self.game_model.game_won:
+                return
+
+
+            self.render_player_prompt_with_text(self.game_model.get_current_player_tag())
+            return
 
         if event.type == pygame.MOUSEBUTTONUP:
             mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -90,6 +104,7 @@ class TicTacToeBoardScene:
 
             self.render_player_prompt_with_text(self.game_model.get_current_player_tag())
             pygame.event.post(Event(1))
+
 
     def get_board_coordinates_from_click_and_render(self, mouse_x, mouse_y, current_player_symbol):
 
