@@ -2,6 +2,8 @@ from pygame.event import Event
 
 import GameWindow
 import pygame
+
+import TitleScreenScene
 from TicTacToe import *
 from GameEnvironment import *
 
@@ -47,7 +49,8 @@ class TicTacToeBoardScene:
         self.x_symbol_sprite = self.prepare_sprite_with_path('./xsprites.png')
         self.o_symbol_sprite = self.prepare_sprite_with_path('./osprites.png')
         self.render_player_prompt_with_text('Player 1')
-
+        self.back_button = pygame.image.load('./back_arrow.png').convert_alpha()
+        self.screen.blit(self.back_button, (10, 26))
         self.symbol_dict = {'O': self.o_symbol_sprite,
                             'X': self.x_symbol_sprite}
 
@@ -62,6 +65,11 @@ class TicTacToeBoardScene:
 
     # This function will deal with interacting with the game based on screen UI interactions.
     def handle_events(self, event):
+        if event.type == pygame.MOUSEBUTTONUP:
+            mouse_coords = pygame.mouse.get_pos()
+            # Back button region
+            if 10 <= mouse_coords[0] <= 10 + 36 and 26 <= mouse_coords[1] <= 10 + 36:
+                GameWindow.GameWindowFoundation.scene = TitleScreenScene.TitleScreenScene(self.screen)
 
         if self.game_model.tie_game:
             self.render_tie_label()
@@ -201,7 +209,7 @@ class TicTacToeBoardScene:
         middle_diff = abs((GameWindow.window_width / 2) - (width / 2))
 
         pygame.draw.rect(self.screen, WHITE,
-                         [0, 26, GameWindow.window_width, prompt_text_surface.get_height()])
+                         [100, 26, GameWindow.window_width, prompt_text_surface.get_height()])
 
         self.screen.blit(prompt_text_surface, (middle_diff, 26))
         pygame.display.update()
@@ -214,7 +222,7 @@ class TicTacToeBoardScene:
         middle_diff = abs((GameWindow.window_width / 2) - (width / 2))
 
         pygame.draw.rect(self.screen, WHITE,
-                         [0, 26, GameWindow.window_width, prompt_text_surface.get_height()])
+                         [100, 26, GameWindow.window_width-10, prompt_text_surface.get_height()])
 
         self.screen.blit(prompt_text_surface, (middle_diff, 26))
         pygame.display.update()
@@ -227,7 +235,7 @@ class TicTacToeBoardScene:
         middle_diff = abs((GameWindow.window_width / 2) - (width / 2))
 
         pygame.draw.rect(self.screen, WHITE,
-                         [0, 26, GameWindow.window_width, prompt_text_surface.get_height()])
+                         [100, 26, GameWindow.window_width-10, prompt_text_surface.get_height()])
 
         self.screen.blit(prompt_text_surface, (middle_diff, 26))
         pygame.display.update()
