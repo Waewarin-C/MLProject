@@ -1,12 +1,9 @@
-from typing import List
 from TabularTrainer import *
 from RandomPlayer import *
 from NNQTrainer import *
 from TicTacToe import *
 import matplotlib.pyplot as plt
-import os
 
-filepath = os.path.join('.\Data', 'qtable.csv')
 action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
                         3: (1, 0), 4: (1, 1), 5: (1, 2),
                         6: (2, 0), 7: (2, 1), 8: (2, 2)}
@@ -14,7 +11,7 @@ action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
 #NOTE: tried to keep anything updating the board in this tile so we could use the TicTacToe functions
 class Training:
 
-    def begin_training(self, number_of_battles = 100):
+    def begin_training(self, number_of_battles = 1):
         # Have own while loop to play game
         agent1_wins = []
         agent2_wins = []
@@ -22,7 +19,6 @@ class Training:
         count = []
         counter = 0
 
-        print("training started")
         for i in range(0, number_of_battles):
             agent1Win, agent2Win, draw = self.battleRounds()
             # Need to figure out the math depending on the number of games
@@ -32,13 +28,11 @@ class Training:
             draws.append((draw/(agent2Win+agent1Win+draw))*100)
             counter = counter + 1
             count.append(counter)
-        print("training ended")
 
         self.visualize_training_results(count, agent1_wins, agent2_wins, draws)
 
-    def battleRounds(self, number_of_games = 100):
+    def battleRounds(self, number_of_games = 20):
         agent1 = TabularTrainer('O', 'Agent 1')
-        #agent2 = NNQTrainer('X', 'Agent 2')
         #agent2 = TabularTrainer('X', 'Agent 2')
         agent2 = RandomPlayer('X', 'Agent 2')
 
@@ -112,18 +106,8 @@ class Training:
         #higher_q_values = self.see_who_has_higher_qvalues(agent1.final_q_values, agent2.final_q_values)
         #Tabular against Random Player
         higher_q_values = agent1.final_q_values
-        #Q Learner NN
-        #higher_q_values = self.see_who_has_higher_qvalues(agent1.final_q_values,agent2.NN.queueValues)
-        self.save_to_file(higher_q_values)
 
         return winner
-
-    def save_to_file(self, qtable):
-        if not os.path.exists('.\Data'):
-            os.makedirs('.\Data')
-        file = open(filepath, "w")
-        file.write(str(qtable)[1:-1])
-        file.close()
 
     def see_who_has_higher_qvalues(self, agent1_q_values, agent2_q_values):
         agent1 = 0.0
@@ -149,6 +133,6 @@ class Training:
         plt.title('Battle Round Metrics')
         plt.legend(['Agent 1 Wins', 'Agent 2 Wins', 'Draws'])
         plt.xlabel('Battle Round Number')
-        plt.ylabel('Number of Agent Wins or Draws')
+        plt.ylabel('Percentage of Agent Wins or Draws')
         plt.show()
         # Code for plotting a graph

@@ -1,7 +1,8 @@
 from GameBoard import *
 from Player import Player
+import os
 
-NUM_EPISODES = 1_000
+filepath = os.path.join('.\Data', 'qtable.txt')
 
 LEARNING_RATE = 0.9  # alpha
 DISCOUNT_FACTOR = 0.95  # gamma
@@ -71,6 +72,8 @@ class TabularTrainer(Player):
         self.playHistory.reverse()
         next_max_value = -1.0
 
+        agent_data = {}
+
         for history in self.playHistory:
             self.final_q_values = self.get_state_q_values(history[0])
 
@@ -85,9 +88,61 @@ class TabularTrainer(Player):
                 # less important it is to the agent winning the game the further back we go
                 # thus the use of the learning rate and the discount factor
                 self.final_q_values[history[1]] = self.final_q_values[history[1]] * (1.0 - LEARNING_RATE) + LEARNING_RATE * DISCOUNT_FACTOR * next_max_value
-
+            if history[0] in agent_data:
+                temp = self.get_largest_q_table(agent_data[history[0]], self.final_q_values)
+                agent_data[history[0]] = temp
+            else:
+                agent_data[history[0]] = self.final_q_values
             next_max_value = max(self.final_q_values)
 
-    # possible TODO if it even shows up
-    def visualize(self):
-        pass
+        #Compare dictionary to find the largest q table values for the given state.
+        final_dict = self.dictionary_compare(agent_data)
+        #Save the dictionary to file.
+        self.save_to_file(final_dict)
+
+    def get_largest_q_table(self, array1, array2):
+        a1 = sum(array1)
+        a2 = sum(array2)
+
+        if a2 > a1:
+            return array2
+        else:
+            return array1
+
+    def dictionary_compare(self, agent_data):
+        temp_dict = self.load_to_dict()
+        if temp_dict is None:
+            return agent_data
+        else:
+            for key in agent_data:
+                if key in temp_dict:
+                    largest_q_table = self.get_largest_q_table(temp_dict[key], agent_data[key])
+                    temp_dict[key] = largest_q_table
+                else:
+                    temp_dict[key] = agent_data[key]
+            return temp_dict
+
+
+    def save_to_file(self, queue_dict):
+        if not os.path.exists('.\Data'):
+            os.makedirs('.\Data')
+        with open(filepath, "w") as file:
+            for key in queue_dict:
+                file.write(str(key) + ":" + str(queue_dict[key])[1:-1] + "\n")
+
+    def load_to_dict(self):
+        dict_values = {}
+
+        if not os.path.exists(filepath):
+            return None
+        else:
+            file = open(filepath, "r")
+            for line in file:
+                line_split = line.split(":")
+                values_split = line_split[1].split(",")
+                array = []
+                for i in values_split:
+                    array.append(float(i))
+                dict_values[line_split[0]] = array
+            file.close()
+            return dict_values
