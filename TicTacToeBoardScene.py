@@ -82,7 +82,7 @@ class TicTacToeBoardScene:
         # TODO: Allow the agent to make its play here.
         if self.use_agent and self.game_model.get_player_number() == 2:
             agent = self.game_model.get_current_player()
-            move = agent.move(self.game_model.game_board)
+            move = agent.move_agent(self.game_model.game_board)
             coord = action_to_coordinate[move]
             agent_symbol = self.game_model.get_current_player().get_player_symbol()
             hit_box = board_to_UI[coord]

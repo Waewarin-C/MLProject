@@ -1,5 +1,6 @@
 from GameBoard import *
 from Player import Player
+import random
 import os
 
 filepath = os.path.join('.\Data', 'qtable.txt')
@@ -28,6 +29,41 @@ class TabularTrainer(Player):
         self.playHistory = []
 
         self.final_q_values = np.empty([0, 9])
+        self.historic_data = {}
+
+    def move_agent(self, board) -> int:
+        boardState = board.get_board_state()
+        if boardState in self.historic_data:
+            queueValues = self.historic_data[boardState]
+            while True:
+                move = np.argmax(queueValues)
+                coord = action_to_coordinate[move]
+
+                max = np.max(queueValues)
+                if max == -1.0:
+                    return max
+
+                if board.isSpaceTaken(coord):
+                    queueValues[move] = -1.0
+                else:
+                    return move
+        else:
+            check = False
+            for i in boardState:
+                if i == '0':
+                    check = True
+            if check is False:
+                return -1
+
+            while True:
+                move = random.randint(0, 8)
+                coord = action_to_coordinate[move]
+                if board.isSpaceTaken(coord):
+                  pass
+                else:
+                    return move
+
+
 
     def move(self, board) -> int:
         boardState = board.get_board_state()
