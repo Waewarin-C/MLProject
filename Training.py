@@ -11,7 +11,8 @@ action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
 #NOTE: tried to keep anything updating the board in this tile so we could use the TicTacToe functions
 class Training:
 
-    def begin_training(self, number_of_battles = 1):
+    def begin_training(self, number_of_battles = 20):
+        print("training started")
         # Have own while loop to play game
         agent1_wins = []
         agent2_wins = []
@@ -20,6 +21,7 @@ class Training:
         counter = 0
 
         for i in range(0, number_of_battles):
+            print("battle " + str(i))
             agent1Win, agent2Win, draw = self.battleRounds()
             # Need to figure out the math depending on the number of games
             # we want it to show like in the example code (I might not have explained that clearly oops)
@@ -30,8 +32,9 @@ class Training:
             count.append(counter)
 
         self.visualize_training_results(count, agent1_wins, agent2_wins, draws)
+        print("training ended")
 
-    def battleRounds(self, number_of_games = 20):
+    def battleRounds(self, number_of_games = 1000):
         agent1 = TabularTrainer('O', 'Agent 1')
         #agent2 = TabularTrainer('X', 'Agent 2')
         agent2 = RandomPlayer('X', 'Agent 2')
@@ -41,6 +44,7 @@ class Training:
         drawCount = 0
 
         for i in range(0, number_of_games):
+            print("game " + str(i))
             winner = self.playGame(agent1, agent2, number_of_games)
             if winner == 1:
                 agent1WinCount += 1

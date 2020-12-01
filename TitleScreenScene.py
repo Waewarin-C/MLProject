@@ -123,7 +123,7 @@ class TitleScreenScene:
 
                     if id == 'Train Agent':
                         trainer = Training()
-                        trainer.begin_training(number_of_battles=500)
+                        trainer.begin_training(number_of_battles=100)
                         break
 
                     GameWindow.GameWindowFoundation.scene = ChooseSymbolScene(self.screen, id)
