@@ -22,7 +22,7 @@ class RandomPlayer(Player):
             return -1
 
         while True:
-            move = random.randint(0,8)
+            move = random.randint(0, 8)
             coord = action_to_coordinate[move]
 
             if board.isSpaceTaken(coord):

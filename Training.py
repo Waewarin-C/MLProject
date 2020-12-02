@@ -25,16 +25,16 @@ class Training:
             agent1Win, agent2Win, draw = self.battleRounds()
             # Need to figure out the math depending on the number of games
             # we want it to show like in the example code (I might not have explained that clearly oops)
-            agent1_wins.append(agent1Win)
-            agent2_wins.append(agent2Win)
-            draws.append(draw)
+            agent1_wins.append((agent1Win / (agent1Win + agent2Win + draw)) * 100)
+            agent2_wins.append((agent2Win / (agent1Win + agent2Win + draw)) * 100)
+            draws.append((draw / (agent1Win + agent2Win + draw)) * 100)
             counter = counter + 1
             count.append(counter)
 
         self.visualize_training_results(count, agent1_wins, agent2_wins, draws)
         print("training ended")
 
-    def battleRounds(self, number_of_games = 1000):
+    def battleRounds(self, number_of_games = 100):
         agent1 = TabularTrainer('O', 'Agent 1')
         agent2 = TabularTrainer('X', 'Agent 2')
         #agent2 = RandomPlayer('X', 'Agent 2')
@@ -45,7 +45,9 @@ class Training:
 
         for i in range(0, number_of_games):
             print("game " + str(i))
+
             winner = self.playGame(agent1, agent2, number_of_games)
+
             if winner == 1:
                 agent1.save_to_file(agent1.historic_data)
                 agent1WinCount += 1
@@ -53,7 +55,6 @@ class Training:
                 agent2.save_to_file(agent2.historic_data)
                 agent2WinCount += 1
             else:
-                agent1.save_to_file(agent1.historic_data)
                 drawCount += 1
 
         return agent1WinCount, agent2WinCount, drawCount
@@ -76,8 +77,6 @@ class Training:
 
         winner = self.get_game_results(game, agent1, agent2)
 
-
-
         return winner
 
     def evaluateMove(self, agent, game):
@@ -92,9 +91,33 @@ class Training:
 
         game.game_board.setSpaceTaken(coord)
 
-        finished = game.is_game_over()
+        finished = self.game_is_finished(game.get_board_grid())
 
         return finished
+
+    def game_is_finished(self, board):
+        game_over = False
+
+        if np.all((board == 0)):
+            game_over = True
+        if (board[0, 0] > 0) and (board[0, 0] == board[0, 1] == board[0, 2]):
+            game_over = True
+        if (board[1, 0] > 0) and (board[1, 0] == board[1, 1] == board[1, 2]):
+            game_over = True
+        if (board[2, 0] > 0) and (board[2, 0] == board[2, 1] == board[2, 2]):
+            game_over = True
+        if (board[0, 0] > 0) and (board[0, 0] == board[1, 1] == board[2, 2]):
+            game_over = True
+        if (board[0, 2] > 0) and (board[0, 2] == board[1, 1] == board[2, 0]):
+            game_over = True
+        if (board[0, 0] > 0) and (board[0, 0] == board[1, 0] == board[2, 0]):
+            game_over = True
+        if (board[0, 1] > 0) and (board[0, 1] == board[1, 1] == board[2, 1]):
+            game_over = True
+        if (board[0, 2] > 0) and (board[0, 2] == board[1, 2] == board[2, 2]):
+            game_over = True
+
+        return game_over
 
     def get_game_results(self, game, agent1, agent2) -> int:
         winner = 0
@@ -135,24 +158,13 @@ class Training:
 
     #Plot the number of games each agent wins and ties
     def visualize_training_results(self, gameNum, agent1_wins, agent2_wins, draws):
-        agent1_wins_perc = (agent1_wins / (agent2_wins + agent1_wins + draws)) * 100
-        agent2_wins_perc = (agent2_wins / (agent2_wins + agent1_wins + draws)) * 100
-        draws_perc = (draws / (agent2_wins + agent1_wins + draws)) * 100
 
-        plt.plot(gameNum, agent1_wins_perc)
-        plt.plot(gameNum, agent2_wins_perc)
-        plt.plot(gameNum, draws_perc)
+        plt.plot(gameNum, agent1_wins)
+        plt.plot(gameNum, agent2_wins)
+        plt.plot(gameNum, draws)
         plt.title('Battle Round Metrics')
         plt.legend(['Agent 1 Wins', 'Agent 2 Wins', 'Draws'])
         plt.xlabel('Battle Round Number')
         plt.ylabel('Percentage of Agent Wins or Draws')
         plt.show()
 
-        plt.bar(gameNum, agent1_wins_perc)
-        plt.bar(gameNum, agent2_wins_perc)
-        plt.bar(gameNum, draws_perc)
-        plt.title('Battle Round Metrics')
-        plt.legend(['Agent 1 Wins', 'Agent 2 Wins', 'Draws'])
-        plt.xlabel('Battle Round Number')
-        plt.ylabel('Percentage of Agent Wins or Draws')
-        plt.show

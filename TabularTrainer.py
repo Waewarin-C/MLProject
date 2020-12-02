@@ -123,12 +123,16 @@ class TabularTrainer(Player):
                 # less important it is to the agent winning the game the further back we go
                 # thus the use of the learning rate and the discount factor
                 self.final_q_values[history[1]] = self.final_q_values[history[1]] * (1.0 - LEARNING_RATE) + LEARNING_RATE * DISCOUNT_FACTOR * next_max_value
+            next_max_value = max(self.final_q_values)
+            #agent_data[history[0]] = self.final_q_values
+
             if history[0] in agent_data:
                 temp = self.get_largest_q_table(agent_data[history[0]], self.final_q_values)
                 agent_data[history[0]] = temp
             else:
                 agent_data[history[0]] = self.final_q_values
-            next_max_value = max(self.final_q_values)
+
+
 
         #Compare dictionary to find the largest q table values for the given state.
         self.historic_data = self.dictionary_compare(agent_data, self.historic_data)

@@ -92,6 +92,11 @@ class TicTacToeBoardScene:
             self.game_model.determine_winner()
 
             if self.game_model.game_won or self.game_model.tie_game:
+               # if self.game_model.game_won:
+                #    agent.result("won")
+               # elif self.game_model.tie_game:
+                #    agent.result("tie")
+
                 pygame.event.post(Event(1))
                 return
 
