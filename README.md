@@ -1,4 +1,5 @@
 # MLProject
+
 ## Reinforce That Tic-Tac-Toe
 Machine Learning project Fall 2020
 
@@ -6,6 +7,14 @@ This project allows us to try something new and venture in-depth on a topic that
 
 # Contributors
 Gabriel Morales, Chelsea Flores Young, and Waewarin Chindarassami
+
+# Specifications and Dependencies
+The IDE that we used to complete this project is PyCharm Community Edition.
+
+In addition, the packages that need to be installed in the IDE to run the program are:
+* `Pygame`
+* `numpy`
+* `matplotlib`
 
 # Scope
 This program is an integration of Machine Learning with UI and an adversarial game. 
@@ -39,15 +48,23 @@ A normal human vs. human game of tic-tac-toe.
 
 It is a simple 3 x 3 array with a player turn "queue", which is also used as a basis for Player vs. Agent.
 
-# Specifications and Dependencies
-The IDE that we used to complete this project is PyCharm Community Edition.
+# Performance
+## Tabular Q vs. Tabular Q (Left) and Tabular Q vs. Random Player (Right)
+#### 100 Battles with 100 Games per Battle -> 10,000 Games Total
+<img src="Performance/TabularTrainerVSItself10000Games.JPG" width="473" height="405"></img>
+<img src="Performance/TabularTrainerVSRandomPlayer10000Games.JPG" width="473" height="405"></img>
 
-In addition, the packages that need to be installed in the IDE to run the program are:
-* `Pygame`
-* `numpy`
-* `matplotlib`
+#### 100 Battles with 1,000 Games per Battle -> 100,000 Games Total
+<img src="Performance/TabularTrainerVSItself100000Games.JPG" width="473" height="405"></img>
+<img src="Performance/TabularTrainerVSRandomPlayer100000Games.JPG" width="473" height="405"></img>
 
 # Credits
+The basis for both the Tabular Q Learning Algorithm and the implementation of the project are from the following:
+
+Tutorial: https://medium.com/@carsten.friedrich/part-3-tabular-q-learning-a-tic-tac-toe-player-that-gets-better-and-better-fa4da4b0892a
+
+Example code: https://github.com/fcarsten/tic-tac-toe/blob/master/tic_tac_toe/TabularQPlayer.py
+
 The song that is playing while the program is running is:
 
 On Hold For You by Kevin MacLeod
