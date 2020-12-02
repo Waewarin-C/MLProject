@@ -80,6 +80,5 @@ class ChooseSymbolScene:
                                                                                                     use_agent=False)
                 else:
                     agent = TabularTrainer('O', 'Agent')
-                    agent.historic_data = agent.load_to_dict()
                     game_model = TicTacToe(Player('X', 'Player 1'), agent)
                     GameWindow.GameWindowFoundation.scene = TicTacToeBoardScene.TicTacToeBoardScene(self.screen, game_model, use_agent=True)

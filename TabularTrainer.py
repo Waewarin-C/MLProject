@@ -29,7 +29,7 @@ class TabularTrainer(Player):
         self.playHistory = []
 
         self.final_q_values = np.empty([0, 9])
-        self.historic_data = {}
+        self.historic_data = self.load_to_dict()
 
     def move_agent(self, board) -> int:
         boardState = board.get_board_state()
@@ -132,9 +132,8 @@ class TabularTrainer(Player):
             next_max_value = max(self.final_q_values)
 
         #Compare dictionary to find the largest q table values for the given state.
-        final_dict = self.dictionary_compare(agent_data)
-        #Save the dictionary to file.
-        self.save_to_file(final_dict)
+        self.historic_data = self.dictionary_compare(agent_data)
+
 
     def get_largest_q_table(self, array1, array2):
         a1 = sum(array1)
@@ -146,7 +145,7 @@ class TabularTrainer(Player):
             return array1
 
     def dictionary_compare(self, agent_data):
-        temp_dict = self.load_to_dict()
+        temp_dict = self.historic_data
         if temp_dict is None:
             return agent_data
         else:
