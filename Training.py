@@ -8,8 +8,8 @@ action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
                         3: (1, 0), 4: (1, 1), 5: (1, 2),
                         6: (2, 0), 7: (2, 1), 8: (2, 2)}
 
-NUM_OF_BATTLES = 50
-NUM_OF_GAMES = 2000
+NUM_OF_BATTLES = 100
+NUM_OF_GAMES = 100
 #NOTE: tried to keep anything updating the board in this tile so we could use the TicTacToe functions
 class Training:
 
@@ -166,7 +166,7 @@ class Training:
         plt.plot(gameNum, draws)
         plt.title('Battle Round Metrics')
         plt.legend(['Agent 1 Wins', 'Agent 2 Wins', 'Draws'])
-        plt.xlabel('Battle Round Number')
+        plt.xlabel('Number of Games')
         plt.ylabel('Percentage of Agent Wins or Draws')
         plt.show()
 
