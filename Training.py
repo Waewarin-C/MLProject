@@ -9,7 +9,7 @@ action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
                         6: (2, 0), 7: (2, 1), 8: (2, 2)}
 
 NUM_OF_BATTLES = 100
-NUM_OF_GAMES = 100
+NUM_OF_GAMES = 1000
 #NOTE: tried to keep anything updating the board in this tile so we could use the TicTacToe functions
 class Training:
 
@@ -38,8 +38,8 @@ class Training:
 
     def battleRounds(self, number_of_games = NUM_OF_GAMES):
         agent1 = TabularTrainer('O', 'Agent 1')
-        #agent2 = TabularTrainer('X', 'Agent 2')
-        agent2 = RandomPlayer('X', 'Agent 2')
+        agent2 = TabularTrainer('X', 'Agent 2')
+        #agent2 = RandomPlayer('X', 'Agent 2')
 
         agent1WinCount = 0
         agent2WinCount = 0
