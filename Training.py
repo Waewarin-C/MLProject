@@ -38,8 +38,8 @@ class Training:
 
     def battleRounds(self, number_of_games = NUM_OF_GAMES):
         agent1 = TabularTrainer('O', 'Agent 1')
-        agent2 = TabularTrainer('X', 'Agent 2')
-        #agent2 = RandomPlayer('X', 'Agent 2')
+        #agent2 = TabularTrainer('X', 'Agent 2')
+        agent2 = RandomPlayer('X', 'Agent 2')
 
         agent1WinCount = 0
         agent2WinCount = 0
