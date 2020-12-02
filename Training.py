@@ -38,8 +38,8 @@ class Training:
 
     def battleRounds(self, number_of_games = NUM_OF_GAMES):
         agent1 = TabularTrainer('O', 'Agent 1')
-        agent2 = TabularTrainer('X', 'Agent 2')
-        #agent2 = RandomPlayer('X', 'Agent 2')
+        #agent2 = TabularTrainer('X', 'Agent 2')
+        agent2 = RandomPlayer('X', 'Agent 2')
 
         agent1WinCount = 0
         agent2WinCount = 0
@@ -54,7 +54,8 @@ class Training:
                 agent1.save_to_file(agent1.historic_data)
                 agent1WinCount += 1
             elif winner == 2:
-                agent2.save_to_file(agent2.historic_data)
+                if isinstance(agent2, TabularTrainer):
+                    agent2.save_to_file(agent2.historic_data)
                 agent2WinCount += 1
             else:
                 drawCount += 1
@@ -127,18 +128,26 @@ class Training:
         if game.game_won:
             if game.winning_player == game.player_one:
                 agent1.result("won")
-                agent2.result("loss")
+                if isinstance(agent2, TabularTrainer):
+                    agent2.result("loss")
                 winner = 1
             else:
                 agent1.result("loss")
-                agent2.result("won")
+                if isinstance(agent2, TabularTrainer):
+                    agent2.result("won")
                 winner = 2
         elif game.tie_game:
             agent1.result("tie")
-            agent2.result("tie")
+            if isinstance(agent2, TabularTrainer):
+                agent2.result("tie")
 
         #Tabular Trainer against itself
-        higher_q_values = self.see_who_has_higher_qvalues(agent1.final_q_values, agent2.final_q_values)
+        if isinstance(agent2, TabularTrainer):
+            higher_q_values = self.see_who_has_higher_qvalues(agent1.final_q_values, agent2.final_q_values)
+
+        #Tabular Trainer against RandomPlayer
+        if isinstance(agent2, RandomPlayer):
+            higher_q_values = agent1.final_q_values
 
         return winner
 
