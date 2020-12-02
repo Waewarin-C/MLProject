@@ -27,7 +27,6 @@ class TabularTrainer(Player):
 
         self.queue = {}
         self.playHistory = []
-
         self.final_q_values = np.empty([0, 9])
         self.historic_data = self.load_to_dict()
 
@@ -88,11 +87,11 @@ class TabularTrainer(Player):
     def get_state_q_values(self, boardState) -> np.ndarray:
         queueValues = np.empty([0, 9])
 
-        if boardState in self.queue:
-            queueValues = self.queue[boardState]
+        if (boardState in self.historic_data) and (len(self.historic_data) != 0):
+            queueValues = self.historic_data[boardState]
         else:
             queueValues = [Q_INITIALIZER for i in range(9)]
-            self.queue[boardState] = queueValues
+            self.historic_data[boardState] = queueValues
 
         return queueValues
 
@@ -132,7 +131,7 @@ class TabularTrainer(Player):
             next_max_value = max(self.final_q_values)
 
         #Compare dictionary to find the largest q table values for the given state.
-        self.historic_data = self.dictionary_compare(agent_data)
+        self.historic_data = self.dictionary_compare(agent_data, self.historic_data)
 
 
     def get_largest_q_table(self, array1, array2):
@@ -144,17 +143,22 @@ class TabularTrainer(Player):
         else:
             return array1
 
-    def dictionary_compare(self, agent_data):
-        temp_dict = self.historic_data
-        if temp_dict is None:
-            return agent_data
+    def dictionary_compare(self, agent_data1, agent_data2):
+
+        if len(agent_data1.keys()) > len(agent_data2.keys()):
+            temp_dict = agent_data1
         else:
-            for key in agent_data:
+            temp_dict = agent_data2
+
+        if temp_dict is None:
+            return agent_data1
+        else:
+            for key in agent_data1:
                 if key in temp_dict:
-                    largest_q_table = self.get_largest_q_table(temp_dict[key], agent_data[key])
+                    largest_q_table = self.get_largest_q_table(temp_dict[key], agent_data1[key])
                     temp_dict[key] = largest_q_table
                 else:
-                    temp_dict[key] = agent_data[key]
+                    temp_dict[key] = agent_data1[key]
             return temp_dict
 
 
@@ -169,7 +173,7 @@ class TabularTrainer(Player):
         dict_values = {}
 
         if not os.path.exists(filepath):
-            return None
+            return dict_values
         else:
             file = open(filepath, "r")
             for line in file:
