@@ -8,11 +8,11 @@ filepath = os.path.join('.\Data', 'qtable.txt')
 LEARNING_RATE = 0.9  # alpha
 DISCOUNT_FACTOR = 0.95  # gamma
 
-Q_INITIALIZER = 0.5
+Q_INITIALIZER = 0.0
 
 WINNING_REWARD = 1.0
 TIE_REWARD = 0.5
-LOSING_PENALTY = 0.0
+LOSING_PENALTY = -1.0
 
 # The states should be the key into the dict. The value should be the columns of Q values. (in this case 9)
 # Board provides a "get_board_state()" function now, that should allow you to index by state.
@@ -30,46 +30,15 @@ class TabularTrainer(Player):
         self.final_q_values = np.empty([0, 9])
         self.historic_data = self.load_to_dict()
 
-    def move_agent(self, board) -> int:
-        boardState = board.get_board_state()
-        if boardState in self.historic_data:
-            queueValues = self.historic_data[boardState]
-            while True:
-                move = np.argmax(queueValues)
-                coord = action_to_coordinate[move]
-
-                max = np.max(queueValues)
-                if max == -1.0:
-                    return max
-
-                if board.isSpaceTaken(coord):
-                    queueValues[move] = -1.0
-                else:
-                    return move
-        else:
-            check = False
-            for i in boardState:
-                if i == '0':
-                    check = True
-            if check is False:
-                return -1
-
-            while True:
-                move = random.randint(0, 8)
-                coord = action_to_coordinate[move]
-                if board.isSpaceTaken(coord):
-                  pass
-                else:
-                    return move
-
-
-
     def move(self, board) -> int:
         boardState = board.get_board_state()
         queueValues = self.get_state_q_values(boardState)
 
         while True:
-            move = np.argmax(queueValues)
+            if np.all((board == Q_INITIALIZER)):
+                move = move = random.randint(0, 8)
+            else:
+                move = np.argmax(queueValues)
             coord = action_to_coordinate[move]
 
             max = np.max(queueValues)
@@ -87,7 +56,7 @@ class TabularTrainer(Player):
     def get_state_q_values(self, boardState) -> np.ndarray:
         queueValues = np.empty([0, 9])
 
-        if (boardState in self.historic_data) and (len(self.historic_data) != 0):
+        if boardState in self.historic_data:
             queueValues = self.historic_data[boardState]
         else:
             queueValues = [Q_INITIALIZER for i in range(9)]
@@ -107,8 +76,6 @@ class TabularTrainer(Player):
         self.playHistory.reverse()
         next_max_value = -1.0
 
-        agent_data = {}
-
         for history in self.playHistory:
             self.final_q_values = self.get_state_q_values(history[0])
 
@@ -124,18 +91,11 @@ class TabularTrainer(Player):
                 # thus the use of the learning rate and the discount factor
                 self.final_q_values[history[1]] = self.final_q_values[history[1]] * (1.0 - LEARNING_RATE) + LEARNING_RATE * DISCOUNT_FACTOR * next_max_value
             next_max_value = max(self.final_q_values)
-            #agent_data[history[0]] = self.final_q_values
 
-            if history[0] in agent_data:
-                temp = self.get_largest_q_table(agent_data[history[0]], self.final_q_values)
-                agent_data[history[0]] = temp
+            if history[0] in self.historic_data:
+                self.historic_data[history[0]] = self.get_largest_q_table(self.historic_data[history[0]], self.final_q_values)
             else:
-                agent_data[history[0]] = self.final_q_values
-
-
-
-        #Compare dictionary to find the largest q table values for the given state.
-        self.historic_data = self.dictionary_compare(agent_data, self.historic_data)
+                self.historic_data[history[0]] = self.final_q_values
 
 
     def get_largest_q_table(self, array1, array2):
@@ -166,12 +126,12 @@ class TabularTrainer(Player):
             return temp_dict
 
 
-    def save_to_file(self, queue_dict):
+    def save_to_file(self):
         if not os.path.exists('.\Data'):
             os.makedirs('.\Data')
         with open(filepath, "w") as file:
-            for key in queue_dict:
-                file.write(str(key) + ":" + str(queue_dict[key])[1:-1] + "\n")
+            for key in self.historic_data:
+                file.write(str(key) + ":" + str(self.historic_data[key])[1:-1] + "\n")
 
     def load_to_dict(self):
         dict_values = {}
