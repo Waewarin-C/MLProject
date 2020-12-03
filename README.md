@@ -51,12 +51,12 @@ It is a simple 3 x 3 array with a player turn "queue", which is also used as a b
 # Performance
 ## Tabular Q vs. Tabular Q (Left) and Tabular Q vs. Random Player (Right)
 #### 100 Battles with 100 Games per Battle -> 10,000 Games Total
-<img src="Performance/TabularTrainerVSItself10000Games.JPG" width="410" height="405"></img>
-<img src="Performance/TabularTrainerVSRandomPlayer10000Games.JPG" width="410" height="405"></img>
+<img src="Performance/TabularTrainerVSItself10000Games.JPG" width="410" height="342"></img>
+<img src="Performance/TabularTrainerVSRandomPlayer10000Games.JPG" width="410" height="342"></img>
 
 #### 100 Battles with 1,000 Games per Battle -> 100,000 Games Total
-<img src="Performance/TabularTrainerVSItself100000Games.JPG" width="410" height="405"></img>
-<img src="Performance/TabularTrainerVSRandomPlayer100000Games.JPG" width="410" height="405"></img>
+<img src="Performance/TabularTrainerVSItself100000Games.JPG" width="410" height="342"></img>
+<img src="Performance/TabularTrainerVSRandomPlayer100000Games.JPG" width="410" height="342"></img>
 
 # Credits
 The basis for both the Tabular Q Learning Algorithm and the implementation of the project are from the following:
