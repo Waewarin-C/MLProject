@@ -49,7 +49,8 @@ A normal human vs. human game of tic-tac-toe.
 It is a simple 3 x 3 array with a player turn "queue", which is also used as a basis for Player vs. Agent.
 
 # Performance
-## Tabular Q vs. Tabular Q (Left) and Tabular Q vs. Random Player (Right)
+## Tabular Q vs. Tabular Q (Left) and 
+## Tabular Q (Agent 1) vs. Random Player (Agent 2) (Right)
 #### 100 Battles with 100 Games per Battle -> 10,000 Games Total
 <img src="Performance/TabularTrainerVSItself10000Games.JPG" width="410" height="342"></img>
 <img src="Performance/TabularTrainerVSRandomPlayer10000Games.JPG" width="410" height="342"></img>
@@ -57,6 +58,21 @@ It is a simple 3 x 3 array with a player turn "queue", which is also used as a b
 #### 100 Battles with 1,000 Games per Battle -> 100,000 Games Total
 <img src="Performance/TabularTrainerVSItself100000Games.JPG" width="410" height="342"></img>
 <img src="Performance/TabularTrainerVSRandomPlayer100000Games.JPG" width="410" height="342"></img>
+
+## Random Player (Agent 1) vs. Tabular Q (Agent 2)
+#### 100 Battles with 100 Games per Battle -> 10,000 Games Total (Left) and 
+#### 100 Battles with 1,000 Games per Battle -> 100,000 Games Total (Right)
+<img src="Performance/RandomPlayerVSTabularTrainer10000Games.JPG" width="423" height="350"></img>
+<img src="Performance/RandomPlayerVSTabularTrainer100000Games.JPG" width="440" height="365"></img>
+
+## Optimistic Initialization (Left) and Pessimistic Initialization (Right)
+#### 100 Battles with 1,000 Games per Battle -> 100,000 Games Total
+<img src="Performance/OptimisticInitialization.JPG" width="423" height="347"></img>
+<img src="Performance/PessimisticInitialization.JPG" width="435" height="350"></img>
+
+## Player vs. Agent
+#### 20 Games - Not Automated
+<img src="Performance/PlayerVSAgent.JPG" width="420" height="342"></img>
 
 # Credits
 The basis for both the Tabular Q Learning Algorithm and the implementation of the project are from the following:
