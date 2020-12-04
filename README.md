@@ -62,13 +62,13 @@ It is a simple 3 x 3 array with a player turn "queue", which is also used as a b
 ## Random Player (Agent 1) vs. Tabular Q (Agent 2)
 #### 100 Battles with 100 Games per Battle -> 10,000 Games Total (Left) and 
 #### 100 Battles with 1,000 Games per Battle -> 100,000 Games Total (Right)
-<img src="Performance/RandomPlayerVSTabularTrainer10000Games.JPG" width="423" height="350"></img>
-<img src="Performance/RandomPlayerVSTabularTrainer100000Games.JPG" width="430" height="365"></img>
+<img src="Performance/RandomPlayerVSTabularTrainer10000Games.JPG" width="410" height="350"></img>
+<img src="Performance/RandomPlayerVSTabularTrainer100000Games.JPG" width="410" height="365"></img>
 
 ## Optimistic Initialization (Left) and Pessimistic Initialization (Right)
 #### 100 Battles with 1,000 Games per Battle -> 100,000 Games Total
-<img src="Performance/OptimisticInitialization.JPG" width="423" height="347"></img>
-<img src="Performance/PessimisticInitialization.JPG" width="430" height="350"></img>
+<img src="Performance/OptimisticInitialization.JPG" width="410" height="347"></img>
+<img src="Performance/PessimisticInitialization.JPG" width="410" height="350"></img>
 
 ## Player vs. Agent
 #### 20 Games - Not Automated
