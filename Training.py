@@ -1,6 +1,5 @@
 from TabularTrainer import *
 from RandomPlayer import *
-from NNQTrainer import *
 from TicTacToe import *
 import matplotlib.pyplot as plt
 
@@ -8,8 +7,8 @@ action_to_coordinate = {0: (0, 0), 1: (0, 1), 2: (0, 2),
                         3: (1, 0), 4: (1, 1), 5: (1, 2),
                         6: (2, 0), 7: (2, 1), 8: (2, 2)}
 
-NUM_OF_BATTLES = 100
-NUM_OF_GAMES = 1000
+NUM_OF_BATTLES = 10
+NUM_OF_GAMES = 50
 #NOTE: tried to keep anything updating the board in this tile so we could use the TicTacToe functions
 class Training:
 
@@ -51,14 +50,18 @@ class Training:
             winner = self.playGame(agent1, agent2, number_of_games)
 
             if winner == 1:
-                agent1.save_to_file(agent1.historic_data)
+                if isinstance(agent1, TabularTrainer):
+                    agent1.save_to_file()
+                    agent1.historic_data.clear()
                 agent1WinCount += 1
             elif winner == 2:
                 if isinstance(agent2, TabularTrainer):
-                    agent2.save_to_file(agent2.historic_data)
+                    agent2.save_to_file()
+                    agent2.historic_data.clear()
                 agent2WinCount += 1
             else:
                 drawCount += 1
+
 
         return agent1WinCount, agent2WinCount, drawCount
 
@@ -127,27 +130,32 @@ class Training:
 
         if game.game_won:
             if game.winning_player == game.player_one:
-                agent1.result("won")
+                if isinstance(agent1, TabularTrainer):
+                    agent1.result("won")
                 if isinstance(agent2, TabularTrainer):
                     agent2.result("loss")
                 winner = 1
             else:
-                agent1.result("loss")
+                if isinstance(agent1, TabularTrainer):
+                    agent1.result("loss")
                 if isinstance(agent2, TabularTrainer):
                     agent2.result("won")
                 winner = 2
         elif game.tie_game:
-            agent1.result("tie")
+            if isinstance(agent1, TabularTrainer):
+                agent1.result("tie")
             if isinstance(agent2, TabularTrainer):
                 agent2.result("tie")
 
         #Tabular Trainer against itself
-        if isinstance(agent2, TabularTrainer):
+        if isinstance(agent2, TabularTrainer) and isinstance(agent1, TabularTrainer):
             higher_q_values = self.see_who_has_higher_qvalues(agent1.final_q_values, agent2.final_q_values)
 
         #Tabular Trainer against RandomPlayer
         if isinstance(agent2, RandomPlayer):
             higher_q_values = agent1.final_q_values
+        if isinstance(agent1, RandomPlayer):
+            higher_q_values = agent2.final_q_values
 
         return winner
 

@@ -80,3 +80,27 @@ class GameBoard:
     def get_board_state(self):
         strBoardState = ''.join(list(map(str, self.board.flatten().flatten())))
         return strBoardState
+
+    def game_is_finished(self):
+        game_over = False
+
+        if np.all((self.board == 0)):
+            game_over = True
+        if (self.board[0, 0] > 0) and (self.board[0, 0] == self.board[0, 1] == self.board[0, 2]):
+            game_over = True
+        if (self.board[1, 0] > 0) and (self.board[1, 0] == self.board[1, 1] == self.board[1, 2]):
+            game_over = True
+        if (self.board[2, 0] > 0) and (self.board[2, 0] == self.board[2, 1] == self.board[2, 2]):
+            game_over = True
+        if (self.board[0, 0] > 0) and (self.board[0, 0] == self.board[1, 1] == self.board[2, 2]):
+            game_over = True
+        if (self.board[0, 2] > 0) and (self.board[0, 2] == self.board[1, 1] == self.board[2, 0]):
+            game_over = True
+        if (self.board[0, 0] > 0) and (self.board[0, 0] == self.board[1, 0] == self.board[2, 0]):
+            game_over = True
+        if (self.board[0, 1] > 0) and (self.board[0, 1] == self.board[1, 1] == self.board[2, 1]):
+            game_over = True
+        if (self.board[0, 2] > 0) and (self.board[0, 2] == self.board[1, 2] == self.board[2, 2]):
+            game_over = True
+
+        return game_over

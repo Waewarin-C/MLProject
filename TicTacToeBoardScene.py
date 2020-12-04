@@ -58,6 +58,7 @@ class TicTacToeBoardScene:
             self.use_agent = True
 
         self.draw_game_board()
+        self.saved = False
         pygame.display.update()
 
     def render(self):
@@ -71,6 +72,18 @@ class TicTacToeBoardScene:
             if 10 <= mouse_coords[0] <= 10 + 36 and 26 <= mouse_coords[1] <= 10 + 36:
                 GameWindow.GameWindowFoundation.scene = TitleScreenScene.TitleScreenScene(self.screen)
 
+        if self.game_model.is_game_over() and self.use_agent and self.saved is False:
+            agent = self.game_model.player_two
+
+            if self.game_model.get_winning_player() == self.game_model.player_one:
+                agent.result("loss")
+            if self.game_model.get_winning_player() == self.game_model.player_two:
+                agent.result("won")
+            elif self.game_model.tie_game:
+                agent.result("tie")
+            agent.save_to_file()
+            self.saved = True
+
         if self.game_model.tie_game:
             self.render_tie_label()
             return
@@ -79,10 +92,12 @@ class TicTacToeBoardScene:
             self.render_player_winner_with_text(self.game_model.get_winning_player().player_tag)
             return
 
+
+
         # TODO: Allow the agent to make its play here.
         if self.use_agent and self.game_model.get_player_number() == 2:
             agent = self.game_model.get_current_player()
-            move = agent.move_agent(self.game_model.game_board)
+            move = agent.move(self.game_model.game_board)
             coord = action_to_coordinate[move]
             agent_symbol = self.game_model.get_current_player().get_player_symbol()
             hit_box = board_to_UI[coord]
@@ -91,11 +106,9 @@ class TicTacToeBoardScene:
             self.render_symbol_sprite_from_hitbox_with_symbol(hit_box, agent_symbol)
             self.game_model.determine_winner()
 
+
+
             if self.game_model.game_won or self.game_model.tie_game:
-               # if self.game_model.game_won:
-                #    agent.result("won")
-               # elif self.game_model.tie_game:
-                #    agent.result("tie")
 
                 pygame.event.post(Event(1))
                 return
