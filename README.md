@@ -1,4 +1,5 @@
 # MLProject
+NOTE: This project is now archived and no changes are being made.
 
 ## Reinforce That Tic-Tac-Toe
 Machine Learning project Fall 2020
